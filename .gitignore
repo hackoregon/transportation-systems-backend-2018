@@ -52,7 +52,7 @@ coverage.xml
 
 # Django stuff:
 *.log
-local_settings.py
+DEVELOPMENT_settings.py
 
 # Flask stuff:
 instance/
@@ -99,3 +99,7 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+/staticfiles
+
+**/.DS_Store
