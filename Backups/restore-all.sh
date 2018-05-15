@@ -1,8 +1,8 @@
 #! /bin/bash
 
-if [ `( ls -1 /home/dbsuper/Backups/*.backup 2>/dev/null || true ) | wc -l` -gt "0" ]
+if [ `( ls -1 /Backups/*.backup 2>/dev/null || true ) | wc -l` -gt "0" ]
 then
-  for file in /home/dbsuper/Backups/*.backup
+  for file in /Backups/*.backup
   do
     echo "Restoring $file"
     export DBNAME=`pg_restore --list $file | grep dbname | sed 's;^.*dbname: ;;'`
@@ -13,9 +13,9 @@ then
   done
 fi
 
-if [ `( ls -1 /home/dbsuper/Backups/*.sql.gz 2>/dev/null || true ) | wc -l` -gt "0" ]
+if [ `( ls -1 /Backups/*.sql.gz 2>/dev/null || true ) | wc -l` -gt "0" ]
 then
-  for file in /home/dbsuper/Backups/*.sql.gz
+  for file in /Backups/*.sql.gz
   do
     echo "Restoring $file"
     gzip -dc $file | psql
@@ -23,9 +23,9 @@ then
   done
 fi
 
-if [ `( ls -1 /home/dbsuper/Backups/*.sql 2>/dev/null || true ) | wc -l` -gt "0" ]
+if [ `( ls -1 /Backups/*.sql 2>/dev/null || true ) | wc -l` -gt "0" ]
 then
-  for file in /home/dbsuper/Backups/*.sql
+  for file in /Backups/*.sql
   do
     echo "Restoring $file"
     psql < $file

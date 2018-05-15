@@ -9,7 +9,6 @@ RUN apt-get update \
     binutils \
     gdal-bin \
     libproj-dev \
-    postgresql-client-9.6 \
   && apt-get clean
 
 # create and populate /code
@@ -17,9 +16,11 @@ RUN mkdir /code
 WORKDIR /code
 
 COPY /requirements/* /code/
-RUN pip install -r development.txt
+RUN pip install -r production.txt
 
 RUN pip install -r geodjango.txt
 
 RUN python
 COPY . /code/
+
+ENTRYPOINT [ "/code/bin/production-docker-entrypoint.sh" ]

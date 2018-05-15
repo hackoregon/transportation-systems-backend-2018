@@ -8,12 +8,14 @@ services:
     ports:
       - 5439:5432
     environment:
-      - POSTGRES_PASSWORD=sit-down-c0mic
+      - POSTGRES_PASSWORD=${DEVELOPMENT_POSTGRES_PASSWORD}
+      - DATABASE_OWNER=${DEVELOPMENT_DATABASE_OWNER}
+      - TEAM_PASSWORD=${DEVELOPMENT_TEAM_PASSWORD}
   api_development:
     build:
       context: .
       dockerfile: DOCKERFILE.api.development
-    image: api
+    image: api_development
     command: ./bin/development-docker-entrypoint.sh
     volumes:
       - .:/code

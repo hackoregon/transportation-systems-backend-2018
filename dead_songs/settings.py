@@ -33,6 +33,7 @@ ALLOWED_HOSTS = ['*']
 if DEBUG == True:
 
     INSTALLED_APPS = [
+        'test_without_migrations',
         'django.contrib.admin',
         'django.contrib.auth',
         'django.contrib.contenttypes',
@@ -44,11 +45,11 @@ if DEBUG == True:
         'django_filters',
         'rest_framework',
         'rest_framework_swagger',
-        'test_without_migrations',
         ]
 
 else:
     INSTALLED_APPS = [
+        'test_without_migrations',
         'django.contrib.admin',
         'django.contrib.auth',
         'django.contrib.contenttypes',
@@ -169,7 +170,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
 #custom test runner to toggle between Managed=True and Managed=False for models handling test db
-TEST_RUNNER = 'api.utils.UnManagedModelTestRunner'
+#TEST_RUNNER = 'api.utils.UnManagedModelTestRunner'
 
 #rest framework settings for API
 REST_FRAMEWORK = {

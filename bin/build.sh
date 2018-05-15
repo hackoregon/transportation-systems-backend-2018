@@ -1,16 +1,15 @@
 #! /bin/bash
-usage() { echo "Usage: $0 [-l] for a development build, [-s] for a staging build, or [-t] for a travis build " 1>&2; exit 1; }
+usage() { echo "Usage: $0 [-d] for a development build, [-p] for a production build" 1>&2; exit 1; }
 
-while getopts ":lst" opt; do
+if [ $# == 0 ]; then usage; fi
+
+while getopts ":dp" opt; do
     case "$opt" in
-        l)
+        d)
           docker-compose -f development-docker-compose.yml build
           ;;
-        s)
-          docker-compose -f staging-docker-compose.yml build
-          ;;
-        t)
-          docker-compose -f travis-docker-compose.yml build
+        p)
+          docker-compose -f production-docker-compose.yml build
           ;;
         *)
           usage

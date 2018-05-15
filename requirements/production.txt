@@ -1,7 +1,8 @@
-# Gunicorn
+# Imports common.txt packages
+-r common.txt
 
+# Gunicorn
 gunicorn==19.7
-whitenoise==4.0b4
 gevent==1.3a1
 
  # DB connector for Green Connections

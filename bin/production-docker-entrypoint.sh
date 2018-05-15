@@ -1,12 +1,11 @@
-#!/bin/bash
-export PATH=$PATH:~/.local/bin
+#! /bin/bash
 
 # http://linuxcommand.org/lc3_man_pages/seth.html:
 # -e  Exit immediately if a command exits with a non-zero status.
 set -e
 
-# Collect static files
-echo "Collect static files"
+echo Debug: $DEBUG
+
 python -Wall manage.py collectstatic --noinput
 
-python -Wall manage.py test --nomigrations --noinput --keepdb #--parallel
+gunicorn $PROJECT_NAME.wsgi -c gunicorn_config.py
