@@ -43,9 +43,13 @@ if DEBUG == True:
         'corsheaders',
         'django_filters',
         'rest_framework',
+        'rest_framework_gis',
         'rest_framework_swagger',
         'passenger_census_api',
         'safety_hotline_api',
+        'biketown_api',
+        'trimet_stop_event_api',
+        'trimet_gis_api',
         ]
 
 else:
@@ -60,9 +64,13 @@ else:
         'corsheaders',
         'django_filters',
         'rest_framework',
+        'rest_framework_gis',
         'rest_framework_swagger',
         'passenger_census_api',
         'safety_hotline_api',
+        'biketown_api',
+        'trimet_stop_event_api',
+        'trimet_gis_api',
         ]
 
 MIDDLEWARE = [

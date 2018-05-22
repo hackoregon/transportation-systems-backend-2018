@@ -13,15 +13,21 @@ from rest_framework import viewsets
 from rest_framework.filters import SearchFilter, OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend, FilterSet
 
-from safety_hotline_api.models import SafetyHotlineTickets
-from safety_hotline_api.serializers import SafetyHotlineTicketsSerializer
+from trimet_gis_api.models import TmBoundary, TmParkride
+from trimet_gis_api.serializers import TmBoundarySerializer, TmParkrideSerializer
 
-from rest_framework_gis.filters import InBBoxFilter
-
-class SafetyHotlineViewSet(viewsets.ModelViewSet):
+class TmBoundaryViewSet(viewsets.ModelViewSet):
     """
-    This viewset will provide a list of Safety Hotline Tickets.
+    This viewset will provide a list of Trimet Boundaries
     """
 
-    queryset = SafetyHotlineTickets.objects.all()
-    serializer_class = SafetyHotlineTicketsSerializer
+    queryset = TmBoundary.objects.all()
+    serializer_class = TmBoundarySerializer
+
+class TmParkrideViewSet(viewsets.ModelViewSet):
+    """
+    This viewset will provide a list of Trimet Parkride
+    """
+
+    queryset = TmParkride.objects.all()
+    serializer_class = TmParkrideSerializer
