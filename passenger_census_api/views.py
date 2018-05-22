@@ -16,7 +16,7 @@ from django_filters.rest_framework import DjangoFilterBackend, FilterSet
 from passenger_census_api.models import PassengerCensus
 from passenger_census_api.serializers import PassengerCensusSerializer
 
-class PassengerCensusViewSet(viewsets.ModelViewSet):
+class PassengerCensusViewSet(viewsets.ReadOnlyModelViewSet):
     """
     This viewset will provide a list of Passenger Census.
     """

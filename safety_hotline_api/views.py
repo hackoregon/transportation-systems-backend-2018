@@ -18,7 +18,7 @@ from safety_hotline_api.serializers import SafetyHotlineTicketsSerializer
 
 from rest_framework_gis.filters import InBBoxFilter
 
-class SafetyHotlineViewSet(viewsets.ModelViewSet):
+class SafetyHotlineViewSet(viewsets.ReadOnlyModelViewSet):
     """
     This viewset will provide a list of Safety Hotline Tickets.
     """

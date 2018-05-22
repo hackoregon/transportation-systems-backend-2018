@@ -33,7 +33,6 @@ ALLOWED_HOSTS = ['*']
 if DEBUG == True:
 
     INSTALLED_APPS = [
-        'test_without_migrations',
         'django.contrib.admin',
         'django.contrib.auth',
         'django.contrib.contenttypes',
@@ -54,7 +53,6 @@ if DEBUG == True:
 
 else:
     INSTALLED_APPS = [
-         'test_without_migrations',
         'django.contrib.admin',
         'django.contrib.auth',
         'django.contrib.contenttypes',
@@ -202,7 +200,85 @@ if DEBUG == False:
             'OPTIONS': {
                 'MAX_CONNS': 20
             }
-        }
+        },
+        'odot_crash_data': {
+            'ENGINE': 'django_db_geventpool.backends.postgis',
+            'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+            'NAME': os.environ.get('POSTGRES_NAME'),
+            'OPTIONS': {
+                    'options': '-c search_path=django,odot_crash_data',
+                    'MAX_CONNS': 20
+                },
+            'USER': os.environ.get('POSTGRES_USER'),
+            'HOST': os.environ.get('POSTGRES_HOST'),
+            'PORT': os.environ.get('POSTGRES_PORT'),
+            'CONN_MAX_AGE': 0,
+        },
+        'passenger_census': {
+            'ENGINE': 'django_db_geventpool.backends.postgis',
+            'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+            'OPTIONS': {
+                    'options': '-c search_path=django,passenger_census',
+                    'MAX_CONNS': 20
+                },
+            'NAME': os.environ.get('POSTGRES_NAME'),
+            'USER': os.environ.get('POSTGRES_USER'),
+            'HOST': os.environ.get('POSTGRES_HOST'),
+            'PORT': os.environ.get('POSTGRES_PORT'),
+            'CONN_MAX_AGE': 0,
+        },
+        'trimet_stop_events': {
+            'ENGINE': 'django_db_geventpool.backends.postgis',
+            'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+            'OPTIONS': {
+                    'options': '-c search_path=django,trimet_stop_events',
+                    'MAX_CONNS': 20
+                },
+            'NAME': os.environ.get('POSTGRES_NAME'),
+            'USER': os.environ.get('POSTGRES_USER'),
+            'HOST': os.environ.get('POSTGRES_HOST'),
+            'PORT': os.environ.get('POSTGRES_PORT'),
+            'CONN_MAX_AGE': 0,
+        },
+        'trimet_gis': {
+            'ENGINE': 'django_db_geventpool.backends.postgis',
+            'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+            'OPTIONS': {
+                    'options': '-c search_path=django,trimet_gis',
+                    'MAX_CONNS': 20
+                },
+            'NAME': os.environ.get('POSTGRES_NAME'),
+            'USER': os.environ.get('POSTGRES_USER'),
+            'HOST': os.environ.get('POSTGRES_HOST'),
+            'PORT': os.environ.get('POSTGRES_PORT'),
+            'CONN_MAX_AGE': 0,
+        },
+        'safety_hotline_tickets': {
+            'ENGINE': 'django_db_geventpool.backends.postgis',
+            'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+            'OPTIONS': {
+                    'options': '-c search_path=django,safety_hotline_tickets',
+                    'MAX_CONNS': 20
+                },
+            'NAME': os.environ.get('POSTGRES_NAME'),
+            'USER': os.environ.get('POSTGRES_USER'),
+            'HOST': os.environ.get('POSTGRES_HOST'),
+            'PORT': os.environ.get('POSTGRES_PORT'),
+            'CONN_MAX_AGE': 0,
+        },
+        'biketown': {
+            'ENGINE': 'django_db_geventpool.backends.postgis',
+            'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+            'OPTIONS': {
+                    'options': '-c search_path=django,biketown',
+                    'MAX_CONNS': 20
+                },
+            'NAME': os.environ.get('POSTGRES_NAME'),
+            'USER': os.environ.get('POSTGRES_USER'),
+            'HOST': os.environ.get('POSTGRES_HOST'),
+            'PORT': os.environ.get('POSTGRES_PORT'),
+            'CONN_MAX_AGE': 0,
+        },
     }
 
 # Password validation
@@ -253,7 +329,7 @@ STATIC_URL = '/static/'
 #rest framework settings for API
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 10,
+    'PAGE_SIZE': 100,
     'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.AcceptHeaderVersioning',
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',

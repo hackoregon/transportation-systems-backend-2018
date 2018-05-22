@@ -16,7 +16,7 @@ from django_filters.rest_framework import DjangoFilterBackend, FilterSet
 from trimet_gis_api.models import TmBoundary, TmParkride
 from trimet_gis_api.serializers import TmBoundarySerializer, TmParkrideSerializer
 
-class TmBoundaryViewSet(viewsets.ModelViewSet):
+class TmBoundaryViewSet(viewsets.ReadOnlyModelViewSet):
     """
     This viewset will provide a list of Trimet Boundaries
     """
@@ -24,7 +24,7 @@ class TmBoundaryViewSet(viewsets.ModelViewSet):
     queryset = TmBoundary.objects.all()
     serializer_class = TmBoundarySerializer
 
-class TmParkrideViewSet(viewsets.ModelViewSet):
+class TmParkrideViewSet(viewsets.ReadOnlyModelViewSet):
     """
     This viewset will provide a list of Trimet Parkride
     """

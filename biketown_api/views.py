@@ -16,7 +16,7 @@ from django_filters.rest_framework import DjangoFilterBackend, FilterSet
 from biketown_api.models import BiketownTrips
 from biketown_api.serializers import BiketownTripsSerializer
 
-class BiketownTripsViewSet(viewsets.ModelViewSet):
+class BiketownTripsViewSet(viewsets.ReadOnlyModelViewSet):
     """
     This viewset will provide a list of Biketown Trips.
     """

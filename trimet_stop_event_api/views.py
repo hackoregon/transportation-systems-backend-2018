@@ -16,7 +16,7 @@ from django_filters.rest_framework import DjangoFilterBackend, FilterSet
 from trimet_stop_event_api.models import TrimetStopEvents
 from trimet_stop_event_api.serializers import TrimetStopEventsSerializer
 
-class TrimetStopEventsViewSet(viewsets.ModelViewSet):
+class TrimetStopEventsViewSet(viewsets.ReadOnlyModelViewSet):
     """
     This viewset will provide a list of Biketown Trips.
     """
