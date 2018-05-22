@@ -33,18 +33,19 @@ ALLOWED_HOSTS = ['*']
 if DEBUG == True:
 
     INSTALLED_APPS = [
-         'test_without_migrations',
+        'test_without_migrations',
         'django.contrib.admin',
         'django.contrib.auth',
         'django.contrib.contenttypes',
         'django.contrib.sessions',
         'django.contrib.messages',
         'django.contrib.staticfiles',
-        'api',
         'corsheaders',
         'django_filters',
         'rest_framework',
         'rest_framework_swagger',
+        'passenger_census_api',
+        'safety_hotline_api',
         ]
 
 else:
@@ -56,11 +57,12 @@ else:
         'django.contrib.sessions',
         'django.contrib.messages',
         'django.contrib.staticfiles',
-        'api',
         'corsheaders',
         'django_filters',
         'rest_framework',
         'rest_framework_swagger',
+        'passenger_census_api',
+        'safety_hotline_api',
         ]
 
 MIDDLEWARE = [
@@ -99,6 +101,8 @@ WSGI_APPLICATION = 'transportation_systems_2018.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
+DATABASE_ROUTERS = ['transportation_systems_2018.router.ModelDatabaseRouter',]
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
@@ -107,7 +111,73 @@ DATABASES = {
         'USER': os.environ.get('POSTGRES_USER'),
         'HOST': os.environ.get('POSTGRES_HOST'),
         'PORT': os.environ.get('POSTGRES_PORT')
-    }
+    },
+    'odot_crash_data': {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'OPTIONS': {
+                'options': '-c search_path=django,odot_crash_data'
+            },
+        'NAME': os.environ.get('POSTGRES_NAME'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'HOST': os.environ.get('POSTGRES_HOST'),
+        'PORT': os.environ.get('POSTGRES_PORT')
+    },
+    'passenger_census': {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'OPTIONS': {
+                'options': '-c search_path=django,passenger_census'
+            },
+        'NAME': os.environ.get('POSTGRES_NAME'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'HOST': os.environ.get('POSTGRES_HOST'),
+        'PORT': os.environ.get('POSTGRES_PORT')
+    },
+    'trimet_stop_events': {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'OPTIONS': {
+                'options': '-c search_path=django,trimet_stop_events'
+            },
+        'NAME': os.environ.get('POSTGRES_NAME'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'HOST': os.environ.get('POSTGRES_HOST'),
+        'PORT': os.environ.get('POSTGRES_PORT')
+    },
+    'trimet_gis': {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'OPTIONS': {
+                'options': '-c search_path=django,trimet_gis'
+            },
+        'NAME': os.environ.get('POSTGRES_NAME'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'HOST': os.environ.get('POSTGRES_HOST'),
+        'PORT': os.environ.get('POSTGRES_PORT')
+    },
+    'safety_hotline_tickets': {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'OPTIONS': {
+                'options': '-c search_path=django,safety_hotline_tickets'
+            },
+        'NAME': os.environ.get('POSTGRES_NAME'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'HOST': os.environ.get('POSTGRES_HOST'),
+        'PORT': os.environ.get('POSTGRES_PORT')
+    },
+    'biketown': {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'OPTIONS': {
+                'options': '-c search_path=django,biketown'
+            },
+        'NAME': os.environ.get('POSTGRES_NAME'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'HOST': os.environ.get('POSTGRES_HOST'),
+        'PORT': os.environ.get('POSTGRES_PORT')
+    },
 }
 
 if DEBUG == False:
