@@ -59,7 +59,7 @@ class PassengerCensusDateFilter(DjangoFilterBackend):
         return fields
 
 
-class PassengerCensusRoutesAnnualViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
+class PassengerCensusRoutesAnnualViewSet(viewsets.ViewSetMixin, generics.RetrieveAPIView):
     """
     This viewset will provide a list of Passenger Census by Routes in annual summary.
     """
