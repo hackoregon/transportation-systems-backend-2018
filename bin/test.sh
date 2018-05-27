@@ -6,10 +6,10 @@ if [ $# == 0 ]; then usage; fi
 while getopts ":dp" opt; do
     case "$opt" in
         d)
-          docker-compose -f development-docker-compose.yml run --entrypoint /code/bin/test-entrypoint.sh  api_development
-           ;;
+          docker-compose -f development-docker-compose.yml run --entrypoint /code/bin/test-entrypoint.sh api_development -p 8000
+          ;;
         p)
-          docker-compose -f production-docker-compose.yml run --entrypoint /code/bin/test-entrypoint.sh  $DOCKER_SERVICE
+          docker-compose -f production-docker-compose.yml run --entrypoint /code/bin/test-entrypoint.sh $DOCKER_SERVICE  -p 8000
           ;;
         *)
           usage
