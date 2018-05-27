@@ -1,6 +1,10 @@
 [
   "biketown_api/tests.py::BiketownTripsListEndpointsTestCase::test_list_200_response",
   "passenger_census_api/tests.py::PassengerCensusListEndpointsTestCase::test_list_200_response",
+  "passenger_census_api/tests.py::PassengerCensusRoutesAnnualEndpointTestCase::test_missing_route",
+  "passenger_census_api/tests.py::PassengerCensusRoutesAnnualEndpointTestCase::test_missing_year",
+  "passenger_census_api/tests.py::PassengerCensusRoutesAnnualEndpointTestCase::test_nonexistent_route",
+  "passenger_census_api/tests.py::PassengerCensusRoutesAnnualEndpointTestCase::test_total_stops_response",
   "safety_hotline_api/tests.py::SafetyHotlineListEndpointsTestCase::test_list_200_response",
   "trimet_stop_event_api/tests.py::TrimetStopEventsListEndpointsTestCase::test_list_200_response"
 ]

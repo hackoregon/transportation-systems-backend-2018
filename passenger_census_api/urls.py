@@ -7,6 +7,7 @@ from passenger_census_api import views
 
 router = DefaultRouter()
 router.register(r'PassengerCensus', views.PassengerCensusViewSet)
+router.register(r'PassengerCensusRoutesAnnual', views.PassengerCensusRoutesAnnualViewSet, base_name='PassengerCensus')
 
 # schema_view = get_swagger_view(title='Hack Oregon 2018 Transportation Systems APIs')
 
