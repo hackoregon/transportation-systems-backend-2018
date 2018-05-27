@@ -3,8 +3,8 @@ export PATH=$PATH:~/.local/bin
 
 
 set -e
-
->&2 echo "Postgres is up"
+echo "Collect static files"
+python -Wall manage.py collectstatic --noinput
 
 
 # ./manage.py test --keepdb --noinput
