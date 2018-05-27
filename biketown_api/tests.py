@@ -12,5 +12,5 @@ class BiketownTripsListEndpointsTestCase(TestCase):
     def setUp(self):
         self.client = APIClient()
     def test_list_200_response(self):
-        response = self.client.get('/transportation_systems_2018/biketown/BiketownTrips/')
+        response = self.client.get('/transportation-systemsbiketown/BiketownTrips/')
         assert response.status_code == 200

@@ -12,5 +12,5 @@ class SafetyHotlineListEndpointsTestCase(TestCase):
     def setUp(self):
         self.client = APIClient()
     def test_list_200_response(self):
-        response = self.client.get('/transportation_systems_2018/safety_hotline/SafetyHotlineTickets/')
+        response = self.client.get('/transportation-systemssafety_hotline/SafetyHotlineTickets/')
         assert response.status_code == 200
