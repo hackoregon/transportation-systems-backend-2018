@@ -27,7 +27,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 if os.environ.get('DEBUG')=='True':
     DEBUG=True
 else:
-    DEBUG=True
+    DEBUG=False
 
 
 ALLOWED_HOSTS = ['*']
