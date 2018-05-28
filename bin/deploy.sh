@@ -4,7 +4,7 @@
 if [ -z "$TRAVIS_PULL_REQUEST" ] || [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
 
     # Push only if we're testing the master branch
-    if [ "$TRAVIS_BRANCH" == "master" ]; then
+    # if [ "$TRAVIS_BRANCH" == "master" ]; then
 
         # remove until such time as anybody can remember why it is here
         # export PATH=$PATH:$HOME/.local/bin
@@ -21,9 +21,9 @@ if [ -z "$TRAVIS_PULL_REQUEST" ] || [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
            --cluster "$ECS_CLUSTER"   \
            --image "$DOCKER_REPO"/"$DEPLOY_TARGET"/"$DOCKER_IMAGE":latest \
            --timeout 300
-    else
-        echo "Skipping deploy because branch is not master"
-    fi
+    # else
+    #     echo "Skipping deploy because branch is not master"
+    # fi
 else
     echo "Skipping deploy because it's a pull request"
 fi
