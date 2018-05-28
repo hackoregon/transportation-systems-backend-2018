@@ -3,3 +3,4 @@
 
 postgis-scripts/* text eol=lf
 bin/* text eol=lf
+Backups/*.sh text eol=lf
