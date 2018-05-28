@@ -10,6 +10,6 @@ echo Debug: $DEBUG
 # source usage per https://stackoverflow.com/q/14742358/452120
 source /code/bin/get-ssm-parameters.sh
 
-python -Wall manage.py collectstatic --noinput
+# python -Wall manage.py collectstatic --noinput
 
 gunicorn $PROJECT_NAME.wsgi -c gunicorn_config.py

@@ -79,8 +79,8 @@ DJANGO_SECRET_KEY=r0ck.ar0und.the.c10ck
 
 5. Open your browser and you will be able to access the Django REST framework browserable front end. The IP address you use will depend on your Docker hosting:
 
-    * Windows 10 Pro + Docker for Windows, MacOS or Linux: API root `http://localhost:8000/transportation_systems_2018/<app>`, Swagger API schema `http://localhost:8000/swagger`
-    * Docker Toolbox running on Windows or Mac: API root `http://MACHINE-IP:8000/transportation_systems_2018/<app>`, Swagger API schema `http://MACHINE-IP:8000/swagger`
+    * Windows 10 Pro + Docker for Windows, MacOS or Linux: API root `http://localhost:8000/transportation-systems/<app>`, Swagger API schema `http://localhost:8000/swagger`
+    * Docker Toolbox running on Windows or Mac: API root `http://MACHINE-IP:8000/transportation-systems/<app>`, Swagger API schema `http://MACHINE-IP:8000/swagger`
 
         where `MACHINE-IP` is the IP address `docker-machine ip` returns.
 
