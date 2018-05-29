@@ -81,7 +81,9 @@ class PassengerCensusRoutesAnnualViewSet(viewsets.ViewSetMixin, generics.Retriev
                             stops = stops.filter(summary_begin_date__year=this_year)
                             if stops:
                                 annual_sums = stops.aggregate(sum_ons=Sum('ons')*26, sum_offs=Sum('offs')*26)
-                                weekday_sums = stops.filter(service_key__icontains="W").aggregate(sum_ons=Sum('ons')*5, sum_offs=Sum('offs')*5)
+                                weekday_sums = stops.filter(service_key__icontains="W").aggregate(sum_ons=Sum('ons')*5*26, sum_offs=Sum('offs')*5*26)
+                                saturday_sums = stops.filter(service_key__icontains="S").aggregate(sum_ons=Sum('ons')*26, sum_offs=Sum('offs')*26)
+                                sunday_sums = stops.filter(service_key__icontains="U").aggregate(sum_ons=Sum('ons')*26, sum_offs=Sum('offs')*26)
                                 serialized_stops = PassengerCensusSerializer(stops, many=True)
                                 return Response({'route_number': this_route_number,
                                     'year': this_year,
@@ -89,6 +91,8 @@ class PassengerCensusRoutesAnnualViewSet(viewsets.ViewSetMixin, generics.Retriev
                                     'stops': serialized_stops.data,
                                     'annual_sums': annual_sums,
                                     'weekday_sums': weekday_sums
+                                    'saturday_sums': saturday_sums
+                                    'sunday_sums': sunday_sums
                                     })
                             else:
                                 return Response('No Data found for Route Number and Year', status=status.HTTP_404_NOT_FOUND)
