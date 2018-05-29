@@ -90,8 +90,8 @@ class PassengerCensusRoutesAnnualViewSet(viewsets.ViewSetMixin, generics.Retriev
                                     'total_stops': stops.count(),
                                     'stops': serialized_stops.data,
                                     'annual_sums': annual_sums,
-                                    'weekday_sums': weekday_sums
-                                    'saturday_sums': saturday_sums
+                                    'weekday_sums': weekday_sums,
+                                    'saturday_sums': saturday_sums,
                                     'sunday_sums': sunday_sums
                                     })
                             else:
