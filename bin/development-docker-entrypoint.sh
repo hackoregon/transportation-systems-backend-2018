@@ -16,15 +16,17 @@ done
 
 >&2 echo "Postgres is up"
 echo Debug: $DEBUG
-# Collect static files
-echo "Collect static files"
-python -Wall manage.py collectstatic --noinput
+
 
 echo "Make migrations"
 python -Wall manage.py makemigrations
 
 echo "Migrate"
 python -Wall manage.py migrate
+
+# Collect static files
+echo "Collect static files"
+python -Wall manage.py collectstatic --noinput
 
 echo "Run server..."
 python -Wall manage.py runserver 0.0.0.0:8000
