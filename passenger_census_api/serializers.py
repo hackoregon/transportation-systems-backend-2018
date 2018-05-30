@@ -12,3 +12,8 @@ class PassengerCensusSerializer(serializers.GeoFeatureModelSerializer):
         geo_field = "geom_2913"
         id = 'id'
         fields = '__all__'
+
+class PassengerCensusRoutesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PassengerCensus
+        fields = ['route_number',]
