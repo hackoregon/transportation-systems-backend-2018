@@ -108,4 +108,3 @@ ENV/
 backend-exemplar-2018.code-workspace
 
 env.production
-/.pytest_cache
