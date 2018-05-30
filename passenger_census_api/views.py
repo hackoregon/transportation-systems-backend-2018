@@ -97,7 +97,6 @@ class PassengerCensusRoutesAnnualViewSet(viewsets.ViewSetMixin, generics.ListAPI
                                 return Response({'route_number': this_route_number,
                                     'year': this_year,
                                     'total_stops': stops.count(),
-                                    'stops': serialized_stops.data,
                                     'annual_sums': annual_sums,
                                     'weekday_sums': weekday_sums
                                     })
