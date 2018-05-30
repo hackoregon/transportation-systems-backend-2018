@@ -11,3 +11,4 @@ class SafetyHotlineTicketsSerializer(serializers.GeoFeatureModelSerializer):
         model = SafetyHotlineTickets
         geo_field = "geom_4326"
         fields = '__all__'
+        id = id

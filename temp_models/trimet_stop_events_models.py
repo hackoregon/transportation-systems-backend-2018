@@ -33,6 +33,7 @@ class TrimetStopEvents(models.Model):
     left_there = models.IntegerField(blank=True, null=True)
     travel_miles = models.FloatField(blank=True, null=True)
     travel_seconds = models.IntegerField(blank=True, null=True)
+    id = models.AutoField()
 
     class Meta:
         managed = False
