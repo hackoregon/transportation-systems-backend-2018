@@ -38,6 +38,12 @@ class PassengerCensusRoutesAnnualEndpointTestCase(TestCase):
         self.assertEqual(response.data['total_stops'], 604)
         self.assertEqual(response.data['annual_sums']['sum_ons'], 144118)
         self.assertEqual(response.data['annual_sums']['sum_offs'], 145132)
+        self.assertEqual(response.data['weekday_sums']['sum_ons'], 456820)
+        self.assertEqual(response.data['weekday_sums']['sum_offs'], 453960)
+        self.assertEqual(response.data['saturday_sums']['sum_ons'], 28574)
+        self.assertEqual(response.data['saturday_sums']['sum_offs'], 30186)
+        self.assertEqual(response.data['sunday_sums']['sum_ons'], 24180)
+        self.assertEqual(response.data['sunday_sums']['sum_offs'], 24154)
     def test_missing_route(self):
         response = self.client.get('/transportation-systems/passenger_census/PassengerCensusRoutesAnnual/?year=2002')
         assert response.status_code == 400
