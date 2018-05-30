@@ -16,7 +16,7 @@ import coreapi
 
 
 from passenger_census_api.models import PassengerCensus
-from passenger_census_api.serializers import PassengerCensusSerializer
+from passenger_census_api.serializers import PassengerCensusSerializer, PassengerCensusRoutesSerializer
 
 
 class LargeResultsSetPagination(PageNumberPagination):
@@ -32,6 +32,15 @@ class PassengerCensusViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
 
     queryset = PassengerCensus.objects.all()
     serializer_class = PassengerCensusSerializer
+
+class PassengerCensusRoutesViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
+    """
+    This viewset will provide a list of Passenger Census.
+    """
+
+    queryset = PassengerCensus.objects.order_by('route_number').values('route_number').distinct()
+    serializer_class = PassengerCensusRoutesSerializer
+    pagination_class = LargeResultsSetPagination
 
 class PassengerCensusRetrieveViewSet(viewsets.ViewSetMixin, generics.RetrieveAPIView):
     """
