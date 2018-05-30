@@ -10,4 +10,5 @@ class BiketownTripsSerializer(serializers.GeoFeatureModelSerializer):
     class Meta:
         model = BiketownTrips
         geo_field = "start_geom_4326"
+        id = id
         fields = '__all__'

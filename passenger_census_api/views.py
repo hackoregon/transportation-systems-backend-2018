@@ -5,7 +5,7 @@ from rest_framework.decorators import api_view, detail_route
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 
-from rest_framework import generics, permissions, renderers, viewsets, status
+from rest_framework import generics, permissions, renderers, viewsets, status, mixins
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework.pagination import PageNumberPagination
@@ -25,7 +25,7 @@ class LargeResultsSetPagination(PageNumberPagination):
     max_page_size = 4000
 
 
-class PassengerCensusViewSet(viewsets.ReadOnlyModelViewSet):
+class PassengerCensusViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
     """
     This viewset will provide a list of Passenger Census.
     """
@@ -33,7 +33,18 @@ class PassengerCensusViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = PassengerCensus.objects.all()
     serializer_class = PassengerCensusSerializer
 
+class PassengerCensusRetrieveViewSet(viewsets.ViewSetMixin, generics.RetrieveAPIView):
+    """
+    This viewset allows you to retrieve a specific Passenger Census entry based on an ID.
+    """
+
+    queryset = PassengerCensus.objects.all()
+    serializer_class = PassengerCensusSerializer
+
 class PassengerCensusDateFilter(DjangoFilterBackend):
+    """
+    This filter is used to inject custom filter fields into schema.
+    """
 
     class Meta:
         model = PassengerCensus
@@ -59,7 +70,7 @@ class PassengerCensusDateFilter(DjangoFilterBackend):
         return fields
 
 
-class PassengerCensusRoutesAnnualViewSet(viewsets.ViewSetMixin, generics.RetrieveAPIView):
+class PassengerCensusRoutesAnnualViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
     """
     This viewset will provide a list of Passenger Census by Routes in annual summary.
     """

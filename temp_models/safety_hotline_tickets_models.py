@@ -18,6 +18,7 @@ class SafetyHotlineTickets(models.Model):
     longitude = models.FloatField(blank=True, null=True)
     latitude = models.FloatField(blank=True, null=True)
     geom_4326 = models.GeometryField(blank=True, null=True)
+    id = models.AutoField()
 
     class Meta:
         managed = False

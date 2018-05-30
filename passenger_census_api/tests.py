@@ -15,6 +15,20 @@ class PassengerCensusListEndpointsTestCase(TestCase):
         response = self.client.get('/transportation-systems/passenger_census/PassengerCensus/')
         assert response.status_code == 200
 
+class PassengerCensusRetrieveViewSetTestCase(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+    def test_list_200_response(self):
+        response = self.client.get('/transportation-systems/passenger_census/PassengerCensus/675/')
+        assert response.status_code == 200
+        self.assertEqual(response.data['geometry'], {
+            "type": "Point",
+            "coordinates": [
+              -122.69685796828406,
+              45.57720689855814
+            ]
+          })
+
 class PassengerCensusRoutesAnnualEndpointTestCase(TestCase):
     def setUp(self):
         self.client = APIClient()
