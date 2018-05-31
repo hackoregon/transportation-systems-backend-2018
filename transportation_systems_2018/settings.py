@@ -54,6 +54,7 @@ if DEBUG == True:
         'biketown_api',
         'trimet_stop_event_api',
         'trimet_gis_api',
+        'odot_crash_api',
         ]
 
 else:
@@ -74,6 +75,7 @@ else:
         'biketown_api',
         'trimet_stop_event_api',
         'trimet_gis_api',
+        'odot_crash_api',
         ]
 
 MIDDLEWARE = [
