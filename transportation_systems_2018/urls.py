@@ -10,6 +10,7 @@ schema_view = get_swagger_view(title='Hack Oregon 2018 Transportation Systems AP
 
 urlpatterns = [
     url(r'^transportation-systems/$', schema_view),
+    url(r'^transportation-systems/odot-crash-data/', include('odot_crash_api.urls')),
     url(r'^transportation-systems/passenger-census/', include('passenger_census_api.urls')),
     url(r'^transportation-systems/safety-hotline/', include('safety_hotline_api.urls')),
     url(r'^transportation-systems/biketown/', include('biketown_api.urls')),
