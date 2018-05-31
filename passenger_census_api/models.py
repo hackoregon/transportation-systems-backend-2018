@@ -16,7 +16,8 @@ class PassengerCensus(models.Model):
     offs = models.IntegerField(blank=True, null=True)
     x_coord = models.FloatField(blank=True, null=True)
     y_coord = models.FloatField(blank=True, null=True)
-    geom_2913 = models.GeometryField(blank=True, null=True)
+    geom_4326 = models.GeometryField(blank=True, null=True)
+    id = models.AutoField(primary_key=True)
 
     class Meta:
         managed = False
