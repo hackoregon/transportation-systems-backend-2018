@@ -16,7 +16,7 @@ import coreapi
 
 
 from passenger_census_api.models import PassengerCensus
-from passenger_census_api.serializers import PassengerCensusSerializer
+from passenger_census_api.serializers import PassengerCensusSerializer, PassengerCensusRoutesSerializer
 
 
 class LargeResultsSetPagination(PageNumberPagination):
@@ -32,6 +32,15 @@ class PassengerCensusViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
 
     queryset = PassengerCensus.objects.all()
     serializer_class = PassengerCensusSerializer
+
+class PassengerCensusRoutesViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
+    """
+    This viewset will provide a list of Passenger Census.
+    """
+
+    queryset = PassengerCensus.objects.order_by('route_number').values('route_number').distinct()
+    serializer_class = PassengerCensusRoutesSerializer
+    pagination_class = LargeResultsSetPagination
 
 class PassengerCensusRetrieveViewSet(viewsets.ViewSetMixin, generics.RetrieveAPIView):
     """
@@ -92,20 +101,32 @@ class PassengerCensusRoutesAnnualViewSet(viewsets.ViewSetMixin, generics.ListAPI
                             stops = stops.filter(summary_begin_date__year=this_year)
                             if stops:
                                 annual_sums = stops.aggregate(sum_ons=Sum('ons')*26, sum_offs=Sum('offs')*26)
-                                weekday_sums = stops.filter(service_key__icontains="W").aggregate(sum_ons=Sum('ons')*5, sum_offs=Sum('offs')*5)
+                                weekday_sums = stops.filter(service_key__icontains="W").aggregate(sum_ons=Sum('ons')*5*26, sum_offs=Sum('offs')*5*26)
+                                saturday_sums = stops.filter(service_key__icontains="S").aggregate(sum_ons=Sum('ons')*26, sum_offs=Sum('offs')*26)
+                                sunday_sums = stops.filter(service_key__icontains="U").aggregate(sum_ons=Sum('ons')*26, sum_offs=Sum('offs')*26)
                                 serialized_stops = PassengerCensusSerializer(stops, many=True)
                                 return Response({'route_number': this_route_number,
                                     'year': this_year,
                                     'total_stops': stops.count(),
                                     'annual_sums': annual_sums,
-                                    'weekday_sums': weekday_sums
+                                    'weekday_sums': weekday_sums,
+                                    'saturday_sums': saturday_sums,
+                                    'sunday_sums': sunday_sums
                                     })
                             else:
                                 return Response('No Data found for Route Number and Year', status=status.HTTP_404_NOT_FOUND)
                         except ValueError:
                             return Response('Search year must be four digit year', status=status.HTTP_400_BAD_REQUEST)
                     else:
-                        return Response('Must include a year for search', status=status.HTTP_400_BAD_REQUEST)
+                        if stops:
+                            annual_sums = stops.aggregate(sum_ons=Sum('ons')*26, sum_offs=Sum('offs')*26)
+                            weekday_sums = stops.filter(service_key__icontains="W").aggregate(sum_ons=Sum('ons')*5, sum_offs=Sum('offs')*5)
+                            serialized_stops = PassengerCensusSerializer(stops, many=True)
+                            return Response({'route_number': this_route_number,
+                                'total_stops': stops.count(),
+                                'annual_sums': annual_sums,
+                                'weekday_sums': weekday_sums
+                                })
                 else:
                     return Response('Route Number not found', status=status.HTTP_404_NOT_FOUND)
             except ValueError:

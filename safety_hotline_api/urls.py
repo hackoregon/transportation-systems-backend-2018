@@ -8,7 +8,7 @@ from safety_hotline_api import views
 
 
 router = DefaultRouter()
-router.register(r'SafetyHotlineTickets', views.SafetyHotlineViewSet)
+router.register(r'safety-hotline-tickets', views.SafetyHotlineViewSet)
 
 # schema_view = get_swagger_view(title='Hack Oregon 2018 Transportation Systems APIs')
 

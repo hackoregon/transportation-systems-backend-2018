@@ -12,5 +12,5 @@ class TrimetStopEventsListEndpointsTestCase(TestCase):
     def setUp(self):
         self.client = APIClient()
     def test_list_200_response(self):
-        response = self.client.get('/transportation-systems/trimet_stop_events/TrimetStopEvents/')
+        response = self.client.get('/transportation-systems/trimet-stop-events/trimet-stop-events/')
         assert response.status_code == 200

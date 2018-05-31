@@ -8,49 +8,52 @@ class PassengerCensusTest(TestCase):
     def setUp(self):
         pass
 
-class PassengerCensusListEndpointsTestCase(TestCase):
+class PassengerListEndpointsTestCase(TestCase):
     def setUp(self):
         self.client = APIClient()
     def test_list_200_response(self):
-        response = self.client.get('/transportation-systems/passenger_census/PassengerCensus/')
+        response = self.client.get('/transportation-systems/passenger-census/passenger-census/')
         assert response.status_code == 200
+
+class PassengerCensusRoutesEndpointsTestCase(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+    def test_list_200_response(self):
+        response = self.client.get('/transportation-systems/passenger-census/passenger-census-routes/')
+        assert response.status_code == 200
+        self.assertEqual(response.data['count'], 130)
 
 class PassengerCensusRetrieveViewSetTestCase(TestCase):
     def setUp(self):
         self.client = APIClient()
     def test_list_200_response(self):
-        response = self.client.get('/transportation-systems/passenger_census/PassengerCensus/675/')
+        response = self.client.get('/transportation-systems/passenger-census/passenger-census/675/')
         assert response.status_code == 200
-        self.assertEqual(response.data['geometry'], {
-            "type": "Point",
-            "coordinates": [
-              -122.69685796828406,
-              45.57720689855814
-            ]
-          })
 
 class PassengerCensusRoutesAnnualEndpointTestCase(TestCase):
     def setUp(self):
         self.client = APIClient()
     def test_total_stops_response(self):
-        response = self.client.get('/transportation-systems/passenger_census/PassengerCensusRoutesAnnual/?route=1&year=2002')
+        response = self.client.get('/transportation-systems/passenger-census/passenger-census-routes-annual/?route=1&year=2002')
         assert response.status_code == 200
         self.assertEqual(response.data['total_stops'], 604)
         self.assertEqual(response.data['annual_sums']['sum_ons'], 144118)
         self.assertEqual(response.data['annual_sums']['sum_offs'], 145132)
+        self.assertEqual(response.data['weekday_sums']['sum_ons'], 456820)
+        self.assertEqual(response.data['weekday_sums']['sum_offs'], 453960)
+        self.assertEqual(response.data['saturday_sums']['sum_ons'], 28574)
+        self.assertEqual(response.data['saturday_sums']['sum_offs'], 30186)
+        self.assertEqual(response.data['sunday_sums']['sum_ons'], 24180)
+        self.assertEqual(response.data['sunday_sums']['sum_offs'], 24154)
     def test_missing_route(self):
-        response = self.client.get('/transportation-systems/passenger_census/PassengerCensusRoutesAnnual/?year=2002')
+        response = self.client.get('/transportation-systems/passenger-census/passenger-census-routes-annual/?year=2002')
         assert response.status_code == 400
         self.assertEqual(response.data, 'Missing Route Number paramater')
-    def test_missing_year(self):
-        response = self.client.get('/transportation-systems/passenger_census/PassengerCensusRoutesAnnual/?route=1')
-        assert response.status_code == 400
-        self.assertEqual(response.data, 'Must include a year for search')
     def test_nonexistent_route(self):
-        response = self.client.get('/transportation-systems/passenger_census/PassengerCensusRoutesAnnual/?route=678&year=2002')
+        response = self.client.get('/transportation-systems/passenger-census/passenger-census-routes-annual/?route=678&year=2002')
         assert response.status_code == 404
         self.assertEqual(response.data, 'Route Number not found')
-    def test_nonexistent_route(self):
-        response = self.client.get('/transportation-systems/passenger_census/PassengerCensusRoutesAnnual/?route=1&year=2990')
-        assert response.status_code == 404
-        self.assertEqual(response.data, 'No Data found for Route Number and Year')
+    # def test_nonexistent_route(self):
+    #     response = self.client.get('/transportation-systems/passenger-census/passenger-census-route-annual/?route=1&year=2990')
+    #     assert response.status_code == 404
+    #     self.assertEqual(response.data, 'No Data found for Route Number and Year')
