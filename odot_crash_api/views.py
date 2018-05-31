@@ -18,15 +18,15 @@ from odot_crash_api.serializers import CrashSerializer, ParticipantSerializer, V
 
 class CrashViewSet(viewsets.ReadOnlyModelViewSet):
     """
-    This viewset will provide a list of Biketown Trips.
+    This viewset will provide a list of Crashes.
     """
 
-    queryset = Crash.objects.prefetch_related("crash_svrty_cd", "crash_hr_no", "crash_typ_cd").all()
+    queryset = Crash.objects.prefetch_related("crash_severity", "crash_hour", "crash_type", "collision_type").all()
     serializer_class = CrashSerializer
 
 class ParticipantViewSet(viewsets.ReadOnlyModelViewSet):
     """
-    This viewset will provide a list of Biketown Trips.
+    This viewset will provide a list of Participants.
     """
 
     queryset = Participant.objects.prefetch_related().all()
@@ -34,7 +34,7 @@ class ParticipantViewSet(viewsets.ReadOnlyModelViewSet):
 
 class VehicleViewSet(viewsets.ReadOnlyModelViewSet):
     """
-    This viewset will provide a list of Biketown Trips.
+    This viewset will provide a list of Vehicles.
     """
 
     queryset = Vehicle.objects.prefetch_related().all()

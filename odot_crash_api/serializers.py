@@ -3,7 +3,7 @@ from rest_framework import serializers
 # from rest_framework_gis import serializers
 from rest_framework.serializers import CharField
 
-from odot_crash_api.models import Crash, CrashHr, CrashSvrty, CrashTyp, Participant, Vehicle
+from odot_crash_api.models import Crash, CrashHr, CrashSvrty, CrashTyp, CollisTyp, Participant, Vehicle
 
 class CrashHrSerializer(serializers.ModelSerializer):
 
@@ -23,10 +23,17 @@ class CrashTypSerializer(serializers.ModelSerializer):
         model = CrashTyp
         fields = ('__all__')
 
+class CollisTypSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = CollisTyp
+        fields = ('__all__')
+
 class CrashSerializer(serializers.ModelSerializer):
-    crash_hr_no = CrashHrSerializer()
-    crash_svrty_cd = CrashSvrtySerializer()
-    crash_typ_cd = CrashTypSerializer()
+    crash_hour = CrashHrSerializer()
+    crash_severity = CrashSvrtySerializer()
+    crash_type = CrashTypSerializer()
+    collision_type = CollisTypSerializer()
     class Meta:
         model = Crash
         fields = '__all__'

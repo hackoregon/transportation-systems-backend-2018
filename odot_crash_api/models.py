@@ -37,6 +37,17 @@ class CrashTyp(models.Model):
         db_table = 'crash_typ'
         in_db = 'odot_crash_data'
 
+class CollisTyp(models.Model):
+    collis_typ_cd = models.TextField(primary_key=True)
+    collis_typ_long_desc = models.TextField(blank=True, null=True)
+    collis_typ_alt_long_desc = models.TextField(blank=True, null=True)
+    collis_typ_med_desc = models.TextField(blank=True, null=True)
+    collis_typ_short_desc = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'collis_typ'
+
 class Crash(models.Model):
     crash_id = models.IntegerField(primary_key=True)
     ser_no = models.TextField(blank=True, null=True)
@@ -45,8 +56,8 @@ class Crash(models.Model):
     crash_day_no = models.IntegerField(blank=True, null=True)
     crash_yr_no = models.IntegerField(blank=True, null=True)
     crash_wk_day_cd = models.IntegerField(blank=True, null=True)
-    crash_hr_no = models.ForeignKey(
-        CrashHr, on_delete=models.CASCADE, db_column="crash_hr_no", related_name="crash_hr")
+    crash_hour = models.ForeignKey(
+        CrashHr, on_delete=models.CASCADE, db_column="crash_hr_no", related_name="crash_hour")
     cnty_id = models.IntegerField(blank=True, null=True)
     cnty_nm = models.TextField(blank=True, null=True)
     city_sect_id = models.IntegerField(blank=True, null=True)
@@ -102,11 +113,11 @@ class Crash(models.Model):
     medn_typ_cd = models.IntegerField(blank=True, null=True)
     medn_typ_short_desc = models.TextField(blank=True, null=True)
     impct_loc_cd = models.IntegerField(blank=True, null=True)
-    crash_typ_cd = models.ForeignKey(
+    crash_type = models.ForeignKey(
         CrashTyp, on_delete=models.CASCADE, db_column="crash_typ_cd", related_name="crash_typ")
-    collis_typ_cd = models.TextField(blank=True, null=True)
-    collis_typ_short_desc = models.TextField(blank=True, null=True)
-    crash_svrty_cd = models.ForeignKey(
+    collision_type = models.ForeignKey(
+        CollisTyp, on_delete=models.CASCADE, db_column="collis_typ_cd", related_name="collis_typ")
+    crash_severity = models.ForeignKey(
         CrashSvrty, on_delete=models.CASCADE, db_column="crash_svrty_cd", related_name="crash_svrty")
     wthr_cond_cd = models.IntegerField(blank=True, null=True)
     wthr_cond_short_desc = models.TextField(blank=True, null=True)
@@ -189,7 +200,7 @@ class Crash(models.Model):
         in_db = 'odot_crash_data'
 
 class Participant(models.Model):
-    crash_id = models.ForeignKey(
+    crash_info = models.ForeignKey(
         Crash, on_delete=models.CASCADE, db_column="crash_id", related_name="crash")
     vhcl_id = models.IntegerField(blank=True, null=True)
     partic_id = models.IntegerField(primary_key=True)
@@ -251,7 +262,7 @@ class Participant(models.Model):
 
 
 class Vehicle(models.Model):
-    crash_id = models.ForeignKey(
+    crash_info = models.ForeignKey(
         Crash, on_delete=models.CASCADE, db_column="crash_id", related_name="crash_id_no")
     vhcl_id = models.IntegerField(primary_key=True)
     vhcl_coded_seq_no = models.IntegerField(blank=True, null=True)
