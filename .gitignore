@@ -108,6 +108,4 @@ ENV/
 backend-exemplar-2018.code-workspace
 
 env.production
-
 temp_models/
-/temp_models
