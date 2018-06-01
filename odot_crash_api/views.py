@@ -18,24 +18,24 @@ from odot_crash_api.serializers import CrashSerializer, ParticipantSerializer, V
 
 class CrashViewSet(viewsets.ReadOnlyModelViewSet):
     """
-    This viewset will provide a list of Biketown Trips.
+    This viewset will provide a list of Crashes.
     """
 
-    queryset = Crash.objects.prefetch_related("crash_svrty_cd", "crash_hr_no", "crash_typ_cd").all()
+    queryset = Crash.objects.prefetch_related("crash_severity", "crash_hour", "crash_type", "collision_type", "crash_cause_1_cd", "crash_cause_2_cd", "crash_cause_3_cd", "crash_evnt_1_cd", "crash_evnt_2_cd", "crash_evnt_3_cd", "invstg_agy_cd", "wthr_cond_cd").all()
     serializer_class = CrashSerializer
 
 class ParticipantViewSet(viewsets.ReadOnlyModelViewSet):
     """
-    This viewset will provide a list of Biketown Trips.
+    This viewset will provide a list of Participants.
     """
 
-    queryset = Participant.objects.prefetch_related().all()
+    queryset = Participant.objects.prefetch_related("actn_cd",    "partic_cause_1_cd", "partic_cause_2_cd", "partic_cause_3_cd",  "partic_evnt_1_cd", "partic_evnt_2_cd",  "partic_evnt_3_cd", "partic_err_1_cd", "partic_err_2_cd", "partic_err_3_cd").all()
     serializer_class = ParticipantSerializer
 
 class VehicleViewSet(viewsets.ReadOnlyModelViewSet):
     """
-    This viewset will provide a list of Biketown Trips.
+    This viewset will provide a list of Vehicles.
     """
 
-    queryset = Vehicle.objects.prefetch_related().all()
+    queryset = Vehicle.objects.prefetch_related("vhcl_actn_cd", "vhcl_cause_1_cd", "vhcl_cause_2_cd", "vhcl_cause_3_cd", "vhcl_evnt_1_cd", "vhcl_evnt_2_cd", "vhcl_evnt_3_cd",  "vhcl_use_cd", "vhcl_typ_cd", "vhcl_ownshp_cd").all()
     serializer_class = VehicleSerializer
