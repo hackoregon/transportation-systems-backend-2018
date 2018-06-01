@@ -47,6 +47,48 @@ class CollisTyp(models.Model):
     class Meta:
         managed = False
         db_table = 'collis_typ'
+        in_db = 'odot_crash_data'
+
+class Cause(models.Model):
+    cause_cd = models.IntegerField(primary_key=True)
+    cause_long_desc = models.TextField(blank=True, null=True)
+    cause_med_desc = models.TextField(blank=True, null=True)
+    cause_short_desc = models.TextField(blank=True, null=True)
+    cause_crash_valid_flg = models.IntegerField(blank=True, null=True)
+    cause_partic_valid_flg = models.IntegerField(blank=True, null=True)
+    cause_vhcl_valid_flg = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'cause'
+        in_db = 'odot_crash_data'
+
+class Err(models.Model):
+    crash_err_cd = models.IntegerField(primary_key=True)
+    crash_err_long_desc = models.TextField(blank=True, null=True)
+    crash_err_med_desc = models.TextField(blank=True, null=True)
+    crash_err_short_desc = models.TextField(blank=True, null=True)
+    crash_err_partic_valid_flg = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'err'
+        in_db = 'odot_crash_data'
+
+
+class Evnt(models.Model):
+    evnt_cd = models.IntegerField(primary_key=True)
+    evnt_long_desc = models.TextField(blank=True, null=True)
+    evnt_med_desc = models.TextField(blank=True, null=True)
+    evnt_short_desc = models.TextField(blank=True, null=True)
+    evnt_crash_valid_flg = models.IntegerField(blank=True, null=True)
+    evnt_partic_valid_flg = models.IntegerField(blank=True, null=True)
+    evnt_vhcl_valid_flg = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'evnt'
+        in_db = 'odot_crash_data'
 
 class Crash(models.Model):
     crash_id = models.IntegerField(primary_key=True)
@@ -130,18 +172,18 @@ class Crash(models.Model):
     traf_cntl_func_flg = models.IntegerField(blank=True, null=True)
     invstg_agy_cd = models.IntegerField(blank=True, null=True)
     invstg_agy_short_desc = models.TextField(blank=True, null=True)
-    crash_evnt_1_cd = models.IntegerField(blank=True, null=True)
-    crash_evnt_1_short_desc = models.TextField(blank=True, null=True)
-    crash_evnt_2_cd = models.IntegerField(blank=True, null=True)
-    crash_evnt_2_short_desc = models.TextField(blank=True, null=True)
-    crash_evnt_3_cd = models.IntegerField(blank=True, null=True)
-    crash_evnt_3_short_desc = models.TextField(blank=True, null=True)
-    crash_cause_1_cd = models.IntegerField(blank=True, null=True)
-    crash_cause_1_short_desc = models.TextField(blank=True, null=True)
-    crash_cause_2_cd = models.IntegerField(blank=True, null=True)
-    crash_cause_2_short_desc = models.TextField(blank=True, null=True)
-    crash_cause_3_cd = models.IntegerField(blank=True, null=True)
-    crash_cause_3_short_desc = models.TextField(blank=True, null=True)
+    crash_evnt_1_cd = models.ForeignKey(
+        Evnt, on_delete=models.CASCADE, db_column="crash_evnt_1_cd", related_name="crash_evnt_1")
+    crash_evnt_2_cd = models.ForeignKey(
+        Evnt, on_delete=models.CASCADE, db_column="crash_evnt_2_cd", related_name="crash_evnt_2")
+    crash_evnt_3_cd = models.ForeignKey(
+        Evnt, on_delete=models.CASCADE, db_column="crash_evnt_3_cd", related_name="crash_evnt_3")
+    crash_cause_1_cd = models.ForeignKey(
+        Cause, on_delete=models.CASCADE, db_column="crash_cause_1_cd", related_name="crash_cause_1")
+    crash_cause_2_cd = models.ForeignKey(
+        Cause, on_delete=models.CASCADE, db_column="crash_cause_2_cd", related_name="crash_cause_2")
+    crash_cause_3_cd = models.ForeignKey(
+        Cause, on_delete=models.CASCADE, db_column="crash_cause_3_cd", related_name="crash_cause_3")
     schl_zone_ind = models.IntegerField(blank=True, null=True)
     wrk_zone_ind = models.IntegerField(blank=True, null=True)
     alchl_invlv_flg = models.IntegerField(blank=True, null=True)
@@ -199,6 +241,19 @@ class Crash(models.Model):
         db_table = 'crash'
         in_db = 'odot_crash_data'
 
+class Actn(models.Model):
+    actn_cd = models.IntegerField(primary_key=True)
+    actn_long_desc = models.TextField(blank=True, null=True)
+    actn_med_desc = models.TextField(blank=True, null=True)
+    actn_short_desc = models.TextField(blank=True, null=True)
+    actn_partic_valid_flg = models.IntegerField(blank=True, null=True)
+    actn_vhcl_valid_flg = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'actn'
+        in_db = 'odot_crash_data'
+
 class Participant(models.Model):
     crash_info = models.ForeignKey(
         Crash, on_delete=models.CASCADE, db_column="crash_id", related_name="crash")
@@ -230,8 +285,8 @@ class Participant(models.Model):
     partic_cmpss_dir_to_short_desc = models.TextField(blank=True, null=True)
     non_motrst_loc_cd = models.IntegerField(blank=True, null=True)
     non_motrst_loc_short_desc = models.TextField(blank=True, null=True)
-    actn_cd = models.IntegerField(blank=True, null=True)
-    actn_short_desc = models.TextField(blank=True, null=True)
+    actn_cd = models.ForeignKey(
+        Actn, on_delete=models.CASCADE, db_column="actn_cd", related_name="actn")
     partic_err_1_cd = models.IntegerField(blank=True, null=True)
     partic_err_1_short_desc = models.TextField(blank=True, null=True)
     partic_err_2_cd = models.IntegerField(blank=True, null=True)

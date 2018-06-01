@@ -21,7 +21,7 @@ class CrashViewSet(viewsets.ReadOnlyModelViewSet):
     This viewset will provide a list of Crashes.
     """
 
-    queryset = Crash.objects.prefetch_related("crash_severity", "crash_hour", "crash_type", "collision_type").all()
+    queryset = Crash.objects.prefetch_related("crash_severity", "crash_hour", "crash_type", "collision_type", "crash_cause_1_cd", "crash_cause_2_cd", "crash_cause_3_cd", "crash_evnt_1_cd", "crash_evnt_2_cd", "crash_evnt_3_cd").all()
     serializer_class = CrashSerializer
 
 class ParticipantViewSet(viewsets.ReadOnlyModelViewSet):
@@ -29,7 +29,7 @@ class ParticipantViewSet(viewsets.ReadOnlyModelViewSet):
     This viewset will provide a list of Participants.
     """
 
-    queryset = Participant.objects.prefetch_related().all()
+    queryset = Participant.objects.prefetch_related("actn_cd").all()
     serializer_class = ParticipantSerializer
 
 class VehicleViewSet(viewsets.ReadOnlyModelViewSet):
