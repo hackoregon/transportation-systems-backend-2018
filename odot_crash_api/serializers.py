@@ -3,7 +3,7 @@ from rest_framework import serializers
 # from rest_framework_gis import serializers
 from rest_framework.serializers import CharField
 
-from odot_crash_api.models import Crash, CrashHr, CrashSvrty, CrashTyp, CollisTyp, Participant, Vehicle, Actn, Cause, Evnt
+from odot_crash_api.models import Crash, CrashHr, CrashSvrty, CrashTyp, CollisTyp, Participant, Vehicle, Actn, Cause, Evnt, Err, InvstgAgy, VhclOwnshp, VhclTyp, VhclUse, WthrCond
 
 class CrashHrSerializer(serializers.ModelSerializer):
 
@@ -41,6 +41,18 @@ class EvntSerializer(serializers.ModelSerializer):
         model = Evnt
         fields = ('__all__')
 
+class InvstgAgySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = InvstgAgy
+        fields = ('__all__')
+
+class WthrCondSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = WthrCond
+        fields = ('__all__')
+
 class CrashSerializer(serializers.ModelSerializer):
     crash_hour = CrashHrSerializer()
     crash_severity = CrashSvrtySerializer()
@@ -52,6 +64,8 @@ class CrashSerializer(serializers.ModelSerializer):
     crash_evnt_1_cd = EvntSerializer()
     crash_evnt_2_cd = EvntSerializer()
     crash_evnt_3_cd = EvntSerializer()
+    invstg_agy_cd = InvstgAgySerializer()
+    wthr_cond_cd = WthrCondSerializer()
     class Meta:
         model = Crash
         fields = '__all__'
@@ -62,7 +76,22 @@ class ActnSerializer(serializers.ModelSerializer):
         model = Actn
         fields = ('__all__')
 
+class ErrSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Err
+        fields = ('__all__')
+
 class ParticipantSerializer(serializers.ModelSerializer):
+    partic_cause_1_cd = CauseSerializer()
+    partic_cause_2_cd = CauseSerializer()
+    partic_cause_3_cd = CauseSerializer()
+    partic_evnt_1_cd = EvntSerializer()
+    partic_evnt_2_cd = EvntSerializer()
+    partic_evnt_3_cd = EvntSerializer()
+    partic_err_1_cd = ErrSerializer()
+    partic_err_2_cd = ErrSerializer()
+    partic_err_3_cd = ErrSerializer()
     crash_info = serializers.HyperlinkedRelatedField(
         read_only=True,
         view_name='crash-detail'
@@ -73,7 +102,36 @@ class ParticipantSerializer(serializers.ModelSerializer):
         model = Participant
         fields = '__all__'
 
+class VhclOwnshpSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = VhclOwnshp
+        fields = ('__all__')
+
+class VhclTypSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = VhclTyp
+        fields = ('__all__')
+
+class VhclUseSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = VhclUse
+        fields = ('__all__')
+
 class VehicleSerializer(serializers.ModelSerializer):
+    vhcl_actn_cd = ActnSerializer()
+    vhcl_cause_1_cd = CauseSerializer()
+    vhcl_cause_2_cd = CauseSerializer()
+    vhcl_cause_3_cd = CauseSerializer()
+    vhcl_evnt_1_cd = EvntSerializer()
+    vhcl_evnt_2_cd = EvntSerializer()
+    vhcl_evnt_3_cd = EvntSerializer()
+    vhcl_ownshp_cd = VhclOwnshpSerializer()
+    vhcl_typ_cd = VhclTypSerializer()
+    vhcl_use_cd = VhclUseSerializer()
+
     crash_info = serializers.HyperlinkedRelatedField(
         read_only=True,
         view_name='vehicle-detail'
