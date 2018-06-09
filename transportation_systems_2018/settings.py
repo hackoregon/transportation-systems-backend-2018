@@ -23,11 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-
-if os.environ.get('DEBUG')=='True':
-    DEBUG=True
-else:
-    DEBUG=False
+DEBUG = bool(os.environ.get('DEBUG', False))
 
 
 ALLOWED_HOSTS = ['*']
@@ -35,48 +31,27 @@ ALLOWED_HOSTS = ['*']
 
 # Application definition
 
-if DEBUG == True:
 
-    INSTALLED_APPS = [
-        'django.contrib.admin',
-        'django.contrib.auth',
-        'django.contrib.contenttypes',
-        'django.contrib.sessions',
-        'django.contrib.messages',
-        'django.contrib.staticfiles',
-        'corsheaders',
-        'django_filters',
-        'rest_framework',
-        'rest_framework_gis',
-        'rest_framework_swagger',
-        'passenger_census_api',
-        'safety_hotline_api',
-        'biketown_api',
-        'trimet_stop_event_api',
-        'trimet_gis_api',
-        'odot_crash_api',
-        ]
 
-else:
-    INSTALLED_APPS = [
-        'django.contrib.admin',
-        'django.contrib.auth',
-        'django.contrib.contenttypes',
-        'django.contrib.sessions',
-        'django.contrib.messages',
-        'django.contrib.staticfiles',
-        'corsheaders',
-        'django_filters',
-        'rest_framework',
-        'rest_framework_gis',
-        'rest_framework_swagger',
-        'passenger_census_api',
-        'safety_hotline_api',
-        'biketown_api',
-        'trimet_stop_event_api',
-        'trimet_gis_api',
-        'odot_crash_api',
-        ]
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'corsheaders',
+    'django_filters',
+    'rest_framework',
+    'rest_framework_gis',
+    'rest_framework_swagger',
+    'passenger_census_api',
+    'safety_hotline_api',
+    'biketown_api',
+    'trimet_stop_event_api',
+    'trimet_gis_api',
+    'odot_crash_api',
+    ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
