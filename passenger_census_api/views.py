@@ -1,6 +1,7 @@
 
 from django.http import HttpResponse, JsonResponse
-from django.db.models import Sum
+from django.db.models import Sum, Count
+from django.db.models.functions import ExtractYear
 from rest_framework.decorators import api_view, detail_route
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
@@ -12,11 +13,13 @@ from rest_framework.pagination import PageNumberPagination
 
 from rest_framework.filters import SearchFilter, OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend, FilterSet
-import coreapi
+import coreapi, json
+import operator
+
 
 
 from passenger_census_api.models import PassengerCensus
-from passenger_census_api.serializers import PassengerCensusSerializer, PassengerCensusRoutesSerializer
+from passenger_census_api.serializers import PassengerCensusSerializer, PassengerCensusRoutesSerializer, PassengerCensusAnnualSerializer
 
 
 class LargeResultsSetPagination(PageNumberPagination):
@@ -78,14 +81,13 @@ class PassengerCensusDateFilter(DjangoFilterBackend):
 
         return fields
 
-
 class PassengerCensusRoutesAnnualViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
     """
     This viewset will provide a list of Passenger Census by Routes in annual summary.
     """
 
-    queryset = PassengerCensus.objects.all()
-    serializer_class = PassengerCensusSerializer
+    # queryset = PassengerCensus.objects.all()
+    serializer_class = PassengerCensusAnnualSerializer
     filter_backends = (PassengerCensusDateFilter,)
     pagination_class = LargeResultsSetPagination
 
@@ -94,43 +96,51 @@ class PassengerCensusRoutesAnnualViewSet(viewsets.ViewSetMixin, generics.ListAPI
             this_route_number = request.GET.get('route', ' ')
             try:
                 stops = PassengerCensus.objects.filter(route_number=this_route_number)
-                if stops:
+                if stops.exists():
                     if request.GET.get('year', ' ') != ' ':
                         this_year = request.GET.get('year', ' ')
                         try:
                             stops = stops.filter(summary_begin_date__year=this_year)
-                            if stops:
-                                annual_sums = stops.aggregate(sum_ons=Sum('ons')*26, sum_offs=Sum('offs')*26)
-                                weekday_sums = stops.filter(service_key__icontains="W").aggregate(sum_ons=Sum('ons')*5*26, sum_offs=Sum('offs')*5*26)
-                                saturday_sums = stops.filter(service_key__icontains="S").aggregate(sum_ons=Sum('ons')*26, sum_offs=Sum('offs')*26)
-                                sunday_sums = stops.filter(service_key__icontains="U").aggregate(sum_ons=Sum('ons')*26, sum_offs=Sum('offs')*26)
-                                serialized_stops = PassengerCensusSerializer(stops, many=True)
-                                return Response({'route_number': this_route_number,
-                                    'year': this_year,
-                                    'total_stops': stops.count(),
-                                    'annual_sums': annual_sums,
-                                    'weekday_sums': weekday_sums,
-                                    'saturday_sums': saturday_sums,
-                                    'sunday_sums': sunday_sums
-                                    })
-                            else:
-                                return Response('No Data found for Route Number and Year', status=status.HTTP_404_NOT_FOUND)
                         except ValueError:
                             return Response('Search year must be four digit year', status=status.HTTP_400_BAD_REQUEST)
-                    else:
-                        if stops:
-                            annual_sums = stops.aggregate(sum_ons=Sum('ons')*26, sum_offs=Sum('offs')*26)
-                            weekday_sums = stops.filter(service_key__icontains="W").aggregate(sum_ons=Sum('ons')*5, sum_offs=Sum('offs')*5)
-                            saturday_sums = stops.filter(service_key__icontains="S").aggregate(sum_ons=Sum('ons')*26, sum_offs=Sum('offs')*26)
-                            sunday_sums = stops.filter(service_key__icontains="U").aggregate(sum_ons=Sum('ons')*26, sum_offs=Sum('offs')*26)
-                            serialized_stops = PassengerCensusSerializer(stops, many=True)
-                            return Response({'route_number': this_route_number,
-                                'total_stops': stops.count(),
-                                'annual_sums': annual_sums,
-                                'weekday_sums': weekday_sums,
-                                'saturday_sums': saturday_sums,
-                                'sunday_sums': sunday_sums
-                                })
+                    if stops.exists():
+                        annuals = stops.values(year=ExtractYear("summary_begin_date")).annotate(
+                            num_of_yearly_census=Count('summary_begin_date', distinct=True)).order_by("year")
+                        weekly = stops.filter(service_key__icontains="W").values(year=ExtractYear("summary_begin_date")).annotate(
+                            weekday_sum_ons=Sum('ons')*5*52/Count('summary_begin_date', distinct=True),
+                            weekday_sum_offs=Sum('offs')*5*52/Count('summary_begin_date', distinct=True),
+                            weekday_total_stops=Count('ons')*5*52/Count('summary_begin_date', distinct=True),
+                            ).order_by("year")
+                        saturday = stops.filter(service_key__icontains="S").values(year=ExtractYear("summary_begin_date")).annotate(
+                            saturday_sum_ons=Sum('ons')*52/Count('summary_begin_date', distinct=True),
+                            saturday_sum_offs=Sum('offs')*52/Count('summary_begin_date', distinct=True),
+                            saturday_total_stops=Count('ons')*5*52/Count('summary_begin_date', distinct=True)).order_by("year")
+                        sunday = stops.filter(service_key__icontains="U").values(year=ExtractYear("summary_begin_date")).annotate(
+                            sunday_sum_ons=Sum('ons')*52/Count('summary_begin_date', distinct=True),
+                            sunday_sum_offs=Sum('offs')*52/Count('summary_begin_date', distinct=True),
+                            sunday_total_stops=Count('ons')*5*52/Count('summary_begin_date', distinct=True)).order_by("year")
+                        sorting_key = operator.itemgetter("year")
+                        for i, j in zip(sorted(weekly, key=sorting_key), sorted(saturday, key=sorting_key)):i.update(j)
+                        for i, j in zip(sorted(weekly, key=sorting_key), sorted(sunday, key=sorting_key)):i.update(j)
+                        for i, j in zip(sorted(weekly, key=sorting_key), sorted(annuals, key=sorting_key)):i.update(j)
+                        for week in weekly:
+                            week["sunday_census"] = True
+                            week["saturday_census"] = True
+                            if  "saturday_sum_ons" not in week:
+                                week["saturday_sum_ons"] = 0
+                                week["saturday_sum_offs"]  = 0
+                                week["saturday_total_stops"] = 0
+                                week["saturday_census"] = False
+                            if "sunday_sum_ons" not in week:
+                                week["sunday_sum_ons"] = 0
+                                week["sunday_sum_offs"]  = 0
+                                week["sunday_total_stops"] = 0
+                                week["sunday_census"] = False
+                            week["annual_sum_ons"] = week["weekday_sum_ons"] + week["saturday_sum_ons"] + week["sunday_sum_ons"]
+                            week["annual_sum_offs"] = week["weekday_sum_offs"] + week["saturday_sum_offs"] + week["sunday_sum_offs"]
+                            week["total_annual_stops"] = week["weekday_total_stops"] + week["saturday_total_stops"] + week["sunday_total_stops"]
+                        return Response(weekly)
+                        # return Response(annuals)
                 else:
                     return Response('Route Number not found', status=status.HTTP_404_NOT_FOUND)
             except ValueError:

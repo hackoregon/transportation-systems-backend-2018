@@ -1,7 +1,7 @@
 
 from rest_framework import serializers
 from rest_framework_gis import serializers
-from rest_framework.serializers import CharField
+from rest_framework.serializers import CharField, IntegerField
 
 from passenger_census_api.models import PassengerCensus
 
@@ -17,3 +17,9 @@ class PassengerCensusRoutesSerializer(serializers.ModelSerializer):
     class Meta:
         model = PassengerCensus
         fields = ['route_number',]
+
+class PassengerCensusAnnualSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PassengerCensus
+        fields = '__all__'
+        year = IntegerField()
