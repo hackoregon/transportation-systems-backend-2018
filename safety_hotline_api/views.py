@@ -19,11 +19,11 @@ from safety_hotline_api.serializers import SafetyHotlineTicketsSerializer
 
 from rest_framework_gis.filters import InBBoxFilter
 
-class TicketFilter(FilterSet):
-    description = django_filters.CharFilter(name="description", lookup_expr='icontains')
-    class Meta:
-        model = SafetyHotlineTickets
-        fields = ['description',]
+# class TicketFilter(FilterSet):
+#     description = django_filters.CharFilter(name="description", lookup_expr='icontains')
+#     class Meta:
+#         model = SafetyHotlineTickets
+#         fields = ['description',]
 
 
 class SafetyHotlineViewSet(viewsets.ReadOnlyModelViewSet):
@@ -32,5 +32,5 @@ class SafetyHotlineViewSet(viewsets.ReadOnlyModelViewSet):
     """
 
     queryset = SafetyHotlineTickets.objects.all()
-    filter_class = TicketFilter
+    # filter_class = TicketFilter
     serializer_class = SafetyHotlineTicketsSerializer
