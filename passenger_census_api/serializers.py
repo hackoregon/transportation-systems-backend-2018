@@ -1,6 +1,7 @@
 
 from rest_framework import serializers
 from rest_framework_gis import serializers
+
 from rest_framework.serializers import CharField, IntegerField, BooleanField
 
 from passenger_census_api.models import PassengerCensus
