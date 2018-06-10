@@ -15,12 +15,12 @@ class SafetyHotlineListEndpointsTestCase(TestCase):
         response = self.client.get('/transportation-systems/safety-hotline/safety-hotline-tickets/')
         assert response.status_code == 200
 
-class SafetyHotlineListDescriptionFilterEndpointsTestCase(TestCase):
-    def setUp(self):
-        self.client = APIClient()
-    def test_list_200_response(self):
-        response = self.client.get('/transportation-systems/safety-hotline/safety-hotline-tickets/?description=street')
-
-        assert response.status_code == 200
-        self.assertEqual(response.data['count'], 1718)
-        self.assertEqual(response.data['results']['type'], 'FeatureCollection')
+# class SafetyHotlineListDescriptionFilterEndpointsTestCase(TestCase):
+#     def setUp(self):
+#         self.client = APIClient()
+#     def test_list_200_response(self):
+#         response = self.client.get('/transportation-systems/safety-hotline/safety-hotline-tickets/?description=street')
+#
+#         assert response.status_code == 200
+#         self.assertEqual(response.data['count'], 1718)
+#         self.assertEqual(response.data['results']['type'], 'FeatureCollection')

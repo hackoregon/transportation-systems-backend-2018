@@ -15,6 +15,7 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend, FilterSet
 import coreapi, json
 import operator
+from passenger_census_api.queries import getCounts, getAnnualTotals
 
 
 
@@ -30,7 +31,7 @@ class LargeResultsSetPagination(PageNumberPagination):
 
 class PassengerCensusViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
     """
-    This viewset will provide a list of Passenger Census.
+    This viewset will provide a list of individual Passenger Census by TRIMET.
     """
 
     queryset = PassengerCensus.objects.all()
@@ -38,7 +39,7 @@ class PassengerCensusViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
 
 class PassengerCensusRoutesViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
     """
-    This viewset will provide a list of Passenger Census.
+    This viewset will provide a list of distinct routes in the Passenger Census by TRIMET.
     """
 
     queryset = PassengerCensus.objects.order_by('route_number').values('route_number').distinct()
@@ -55,7 +56,7 @@ class PassengerCensusRetrieveViewSet(viewsets.ViewSetMixin, generics.RetrieveAPI
 
 class PassengerCensusInfoViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
     """
-    This viewset will provide a info about the Passenger Census.
+    This viewset will provide a info about the Passenger Census by TRIMET.
 
     Returns:
     Distinct Census Dates
@@ -66,13 +67,8 @@ class PassengerCensusInfoViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
 
     def list(self, request, *args, **kwargs):
         census = PassengerCensus.objects.all()
-        census = census.values("summary_begin_date").distinct().annotate(
-            total_routes=Count('route_number', distinct=True),
-            total_stops=Count('stop_seq', distinct=True),
-            year=ExtractYear("summary_begin_date"),
-            ).order_by("summary_begin_date")
+        census = getAnnualTotals(census)
         return Response(census)
-
 
 class PassengerCensusDateFilter(DjangoFilterBackend):
     """
@@ -96,6 +92,7 @@ class PassengerCensusDateFilter(DjangoFilterBackend):
             location="query",
             description="route number",
             type="number",
+            required="true"
             )
         fields.append(year)
         fields.append(route)
@@ -104,7 +101,7 @@ class PassengerCensusDateFilter(DjangoFilterBackend):
 
 class PassengerCensusRoutesAnnualViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
     """
-    This viewset will provide a list of Passenger Census by Routes in annual summary.
+    This viewset will provide a list of Passenger Census by Routes calculated for a total year.
     """
 
     # queryset = PassengerCensus.objects.all()
@@ -125,43 +122,8 @@ class PassengerCensusRoutesAnnualViewSet(viewsets.ViewSetMixin, generics.ListAPI
                         except ValueError:
                             return Response('Search year must be four digit year', status=status.HTTP_400_BAD_REQUEST)
                     if stops.exists():
-                        annuals = stops.values(year=ExtractYear("summary_begin_date")).annotate(
-                            num_of_yearly_census=Count('summary_begin_date', distinct=True)).order_by("year")
-                        weekly = stops.filter(service_key__icontains="W").values(year=ExtractYear("summary_begin_date")).annotate(
-                            weekday_sum_ons=Sum('ons')*5*52/Count('summary_begin_date', distinct=True),
-                            weekday_sum_offs=Sum('offs')*5*52/Count('summary_begin_date', distinct=True),
-                            weekday_total_stops=Count('ons')*5*52/Count('summary_begin_date', distinct=True),
-                            ).order_by("year")
-                        saturday = stops.filter(service_key__icontains="S").values(year=ExtractYear("summary_begin_date")).annotate(
-                            saturday_sum_ons=Sum('ons')*52/Count('summary_begin_date', distinct=True),
-                            saturday_sum_offs=Sum('offs')*52/Count('summary_begin_date', distinct=True),
-                            saturday_total_stops=Count('ons')*5*52/Count('summary_begin_date', distinct=True)).order_by("year")
-                        sunday = stops.filter(service_key__icontains="U").values(year=ExtractYear("summary_begin_date")).annotate(
-                            sunday_sum_ons=Sum('ons')*52/Count('summary_begin_date', distinct=True),
-                            sunday_sum_offs=Sum('offs')*52/Count('summary_begin_date', distinct=True),
-                            sunday_total_stops=Count('ons')*5*52/Count('summary_begin_date', distinct=True)).order_by("year")
-                        sorting_key = operator.itemgetter("year")
-                        for i, j in zip(sorted(weekly, key=sorting_key), sorted(saturday, key=sorting_key)):i.update(j)
-                        for i, j in zip(sorted(weekly, key=sorting_key), sorted(sunday, key=sorting_key)):i.update(j)
-                        for i, j in zip(sorted(weekly, key=sorting_key), sorted(annuals, key=sorting_key)):i.update(j)
-                        for week in weekly:
-                            week["sunday_census"] = True
-                            week["saturday_census"] = True
-                            if  "saturday_sum_ons" not in week:
-                                week["saturday_sum_ons"] = 0
-                                week["saturday_sum_offs"]  = 0
-                                week["saturday_total_stops"] = 0
-                                week["saturday_census"] = False
-                            if "sunday_sum_ons" not in week:
-                                week["sunday_sum_ons"] = 0
-                                week["sunday_sum_offs"]  = 0
-                                week["sunday_total_stops"] = 0
-                                week["sunday_census"] = False
-                            week["annual_sum_ons"] = week["weekday_sum_ons"] + week["saturday_sum_ons"] + week["sunday_sum_ons"]
-                            week["annual_sum_offs"] = week["weekday_sum_offs"] + week["saturday_sum_offs"] + week["sunday_sum_offs"]
-                            week["total_annual_stops"] = week["weekday_total_stops"] + week["saturday_total_stops"] + week["sunday_total_stops"]
+                        weekly = getCounts(stops)
                         return Response(weekly)
-                        # return Response(annuals)
                 else:
                     return Response('Route Number not found', status=status.HTTP_404_NOT_FOUND)
             except ValueError:
