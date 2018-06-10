@@ -75,8 +75,8 @@ def getTotals(stops):
             week["sunday_sum_ons"] = 0
             week["sunday_sum_offs"]  = 0
             week["sunday_census"] = False
-        week["weekly_sum_ons"] = week["weekday_sum_ons"] + week["saturday_sum_ons"] + week["sunday_sum_ons"]
-        week["weekly_sum_offs"] = week["weekday_sum_offs"] + week["saturday_sum_offs"] + week["sunday_sum_offs"]
+        week["total_sum_ons"] = week["weekday_sum_ons"] + week["saturday_sum_ons"] + week["sunday_sum_ons"]
+        week["total_sum_offs"] = week["weekday_sum_offs"] + week["saturday_sum_offs"] + week["sunday_sum_offs"]
     return weekly
 
 def getCensusTotals(census):

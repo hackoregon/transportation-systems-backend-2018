@@ -70,6 +70,28 @@ class PassengerCensusInfoViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
         census = getCensusTotals(census)
         return Response(census)
 
+class PassengerCensusAnnualSystemTotalViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
+    """
+    This viewset will provide a info about Annual System Wide Totals.
+    """
+    serializer_class = PassengerCensusInfoSerializer
+
+    def list(self, request, *args, **kwargs):
+        census = PassengerCensus.objects.all()
+        weekly = getTotals(census)
+        return Response(weekly)
+
+class PassengerCensusAnnualSystemAvgViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
+    """
+    This viewset will provide a info about Annual System Wide Totals.
+    """
+    serializer_class = PassengerCensusInfoSerializer
+
+    def list(self, request, *args, **kwargs):
+        census = PassengerCensus.objects.all()
+        weekly = getAvgs(census)
+        return Response(weekly)
+
 class PassengerCensusDateFilter(DjangoFilterBackend):
     """
     This filter is used to inject custom filter fields into schema.

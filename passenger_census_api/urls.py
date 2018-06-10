@@ -15,6 +15,9 @@ router.register(r'routes/annual/total', views.PassengerCensusRoutesAnnualTotalVi
 
 router.register(r'census/info', views.PassengerCensusInfoViewSet, base_name='passenger-census')
 
+router.register(r'system/annual/average', views.PassengerCensusAnnualSystemAvgViewSet, base_name='passenger-census')
+router.register(r'system/annual/total', views.PassengerCensusAnnualSystemTotalViewSet, base_name='passenger-census')
+
 # schema_view = get_swagger_view(title='Hack Oregon 2018 Transportation Systems APIs')
 
 urlpatterns = [
