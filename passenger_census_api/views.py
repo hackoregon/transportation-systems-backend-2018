@@ -1,6 +1,6 @@
 
 from django.http import HttpResponse, JsonResponse
-from django.db.models import Sum, Count
+from django.db.models import Sum, Count, Case, When, Value, CharField
 from django.db.models.functions import ExtractYear
 from rest_framework.decorators import api_view, detail_route
 from rest_framework.renderers import JSONRenderer
@@ -19,7 +19,7 @@ import operator
 
 
 from passenger_census_api.models import PassengerCensus
-from passenger_census_api.serializers import PassengerCensusSerializer, PassengerCensusRoutesSerializer, PassengerCensusAnnualSerializer
+from passenger_census_api.serializers import PassengerCensusSerializer, PassengerCensusRoutesSerializer, PassengerCensusAnnualSerializer, PassengerCensusInfoSerializer
 
 
 class LargeResultsSetPagination(PageNumberPagination):
@@ -52,6 +52,27 @@ class PassengerCensusRetrieveViewSet(viewsets.ViewSetMixin, generics.RetrieveAPI
 
     queryset = PassengerCensus.objects.all()
     serializer_class = PassengerCensusSerializer
+
+class PassengerCensusInfoViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
+    """
+    This viewset will provide a info about the Passenger Census.
+
+    Returns:
+    Distinct Census Dates
+    The total number of routes for the census
+    The total number of stops for the census
+    """
+    serializer_class = PassengerCensusInfoSerializer
+
+    def list(self, request, *args, **kwargs):
+        census = PassengerCensus.objects.all()
+        census = census.values("summary_begin_date").distinct().annotate(
+            total_routes=Count('route_number', distinct=True),
+            total_stops=Count('stop_seq', distinct=True),
+            year=ExtractYear("summary_begin_date"),
+            ).order_by("summary_begin_date")
+        return Response(census)
+
 
 class PassengerCensusDateFilter(DjangoFilterBackend):
     """

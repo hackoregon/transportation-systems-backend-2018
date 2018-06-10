@@ -37,3 +37,10 @@ class PassengerCensusAnnualSerializer(serializers.ModelSerializer):
         annual_sum_ons = IntegerField()
         annual_sum_offs = IntegerField()
         total_annual_stops = IntegerField()
+
+class PassengerCensusInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PassengerCensus
+        fields = ['summary_begin_date', 'service_key']
+        total_routes = IntegerField()
+        total_stops = IntegerField()
