@@ -25,23 +25,18 @@ class PassengerCensusAnnualSerializer(serializers.ModelSerializer):
         year = IntegerField()
         weekday_sum_ons = IntegerField()
         weekday_sum_offs = IntegerField()
-        weekday_total_stops = IntegerField()
         saturday_sum_ons = IntegerField()
         saturday_sum_offs = IntegerField()
-        saturday_total_stops = IntegerField()
         num_of_yearly_census = IntegerField()
         sunday_census = BooleanField()
         saturday_census = BooleanField()
         sunday_sum_ons = IntegerField()
         sunday_sum_offs = IntegerField()
-        sunday_total_stops = IntegerField()
         annual_sum_ons = IntegerField()
         annual_sum_offs = IntegerField()
-        total_annual_stops = IntegerField()
 
 class PassengerCensusInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = PassengerCensus
         fields = ['summary_begin_date', 'service_key']
         total_routes = IntegerField()
-        total_stops = IntegerField()

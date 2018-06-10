@@ -15,7 +15,7 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend, FilterSet
 import coreapi, json
 import operator
-from passenger_census_api.queries import getCounts, getAnnualTotals
+from passenger_census_api.queries import getAvgs, getCensusTotals, getTotals
 
 
 
@@ -67,7 +67,7 @@ class PassengerCensusInfoViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
 
     def list(self, request, *args, **kwargs):
         census = PassengerCensus.objects.all()
-        census = getAnnualTotals(census)
+        census = getCensusTotals(census)
         return Response(census)
 
 class PassengerCensusDateFilter(DjangoFilterBackend):
@@ -99,7 +99,7 @@ class PassengerCensusDateFilter(DjangoFilterBackend):
 
         return fields
 
-class PassengerCensusRoutesAnnualViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
+class PassengerCensusRoutesAnnualAvgViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
     """
     This viewset will provide a list of Passenger Census by Routes calculated for a total year.
     """
@@ -122,7 +122,7 @@ class PassengerCensusRoutesAnnualViewSet(viewsets.ViewSetMixin, generics.ListAPI
                         except ValueError:
                             return Response('Search year must be four digit year', status=status.HTTP_400_BAD_REQUEST)
                     if stops.exists():
-                        weekly = getCounts(stops)
+                        weekly = getAvgs(stops)
                         return Response(weekly)
                 else:
                     return Response('Route Number not found', status=status.HTTP_404_NOT_FOUND)
@@ -131,5 +131,36 @@ class PassengerCensusRoutesAnnualViewSet(viewsets.ViewSetMixin, generics.ListAPI
         else:
             return Response('Missing Route Number paramater', status=status.HTTP_400_BAD_REQUEST)
 
+class PassengerCensusRoutesAnnualTotalViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
+    """
+    This viewset will provide a list of Passenger Census by Routes calculated for a total year.
+    """
+
+    # queryset = PassengerCensus.objects.all()
+    serializer_class = PassengerCensusAnnualSerializer
+    filter_backends = (PassengerCensusDateFilter,)
+    pagination_class = LargeResultsSetPagination
+
+    def list(self, request, *args, **kwargs):
+        if request.GET.get('route', ' ') != ' ':
+            this_route_number = request.GET.get('route', ' ')
+            try:
+                stops = PassengerCensus.objects.filter(route_number=this_route_number)
+                if stops.exists():
+                    if request.GET.get('year', ' ') != ' ':
+                        this_year = request.GET.get('year', ' ')
+                        try:
+                            stops = stops.filter(summary_begin_date__year=this_year)
+                        except ValueError:
+                            return Response('Search year must be four digit year', status=status.HTTP_400_BAD_REQUEST)
+                    if stops.exists():
+                        weekly = getTotals(stops)
+                        return Response(weekly)
+                else:
+                    return Response('Route Number not found', status=status.HTTP_404_NOT_FOUND)
+            except ValueError:
+                return Response('Route Number must be integer', status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response('Missing Route Number paramater', status=status.HTTP_400_BAD_REQUEST)
 
     # filter_fields = ['route_number',]
