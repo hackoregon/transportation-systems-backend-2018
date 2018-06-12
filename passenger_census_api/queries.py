@@ -1,7 +1,8 @@
 from django.http import HttpResponse, JsonResponse
 from django.db.models import Sum, Count, Case, When, Value, CharField
 from django.db.models.functions import ExtractYear
-import operator
+import operator, json
+from .routes import routes
 
 def getYearlyAvg(stops):
         annuals = stops.values(year=ExtractYear("summary_begin_date")).annotate(
@@ -103,3 +104,8 @@ def getCensusTotals(census):
         week["total_sum_offs"] = week["weekday_sum_offs"] + week["saturday_sum_offs"] + week["sunday_sum_offs"]
 
     return weekly
+
+def routeDetailLookup(pk):
+    dictdump = json.loads(routes)
+    r = list(filter(lambda route: str(route['route_id']) == pk, dictdump))
+    return r[0]

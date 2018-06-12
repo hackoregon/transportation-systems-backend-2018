@@ -7,7 +7,8 @@ from passenger_census_api import views
 
 router = DefaultRouter()
 router.register(r'', views.PassengerCensusViewSet)
-router.register(r'routes', views.PassengerCensusRoutesViewSet)
+router.register(r'routes', views.PassengerCensusRoutesViewSet, base_name='passenger-census')
+# router.register(r'^routes/(?P<pk>[0-9]+)/$', views.RouteDetail.as_view(), base_name='passenger-census')
 
 router.register(r'', views.PassengerCensusRetrieveViewSet)
 router.register(r'routes/annual/average', views.PassengerCensusRoutesAnnualAvgViewSet, base_name='passenger-census')
@@ -23,5 +24,5 @@ router.register(r'system/annual/total', views.PassengerCensusAnnualSystemTotalVi
 urlpatterns = [
     # url(r'^schema/', schema_view),
     url(r'^', include(router.urls)),
-    # url(r'^api/', include(router.urls)),
+    url(r'^routes/(?P<pk>[0-9]+)/$', views.RouteDetail.as_view())
 ]

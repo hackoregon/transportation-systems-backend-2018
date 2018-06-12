@@ -111,11 +111,33 @@ DATABASES = {
         'HOST': os.environ.get('POSTGRES_HOST'),
         'PORT': os.environ.get('POSTGRES_PORT')
     },
+    'multnomah_county_permits': {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'OPTIONS': {
+                'options': '-c search_path=django,multnomah_county_permits'
+            },
+        'NAME': os.environ.get('POSTGRES_NAME'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'HOST': os.environ.get('POSTGRES_HOST'),
+        'PORT': os.environ.get('POSTGRES_PORT')
+    },
     'passenger_census': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
         'OPTIONS': {
                 'options': '-c search_path=django,passenger_census'
+            },
+        'NAME': os.environ.get('POSTGRES_NAME'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'HOST': os.environ.get('POSTGRES_HOST'),
+        'PORT': os.environ.get('POSTGRES_PORT')
+    },
+    'census_gis': {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'OPTIONS': {
+                'options': '-c search_path=django,census_gis'
             },
         'NAME': os.environ.get('POSTGRES_NAME'),
         'USER': os.environ.get('POSTGRES_USER'),
@@ -207,6 +229,19 @@ if DEBUG == False:
             'PORT': os.environ.get('POSTGRES_PORT'),
             'CONN_MAX_AGE': 0,
         },
+        'multnomah_county_permits': {
+            'ENGINE': 'django_db_geventpool.backends.postgis',
+            'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+            'NAME': os.environ.get('POSTGRES_NAME'),
+            'OPTIONS': {
+                    'options': '-c search_path=django,multnomah_county_permits',
+                    'MAX_CONNS': 20
+                },
+            'USER': os.environ.get('POSTGRES_USER'),
+            'HOST': os.environ.get('POSTGRES_HOST'),
+            'PORT': os.environ.get('POSTGRES_PORT'),
+            'CONN_MAX_AGE': 0,
+        },
         'passenger_census': {
             'ENGINE': 'django_db_geventpool.backends.postgis',
             'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
@@ -238,6 +273,19 @@ if DEBUG == False:
             'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
             'OPTIONS': {
                     'options': '-c search_path=django,trimet_gis',
+                    'MAX_CONNS': 20
+                },
+            'NAME': os.environ.get('POSTGRES_NAME'),
+            'USER': os.environ.get('POSTGRES_USER'),
+            'HOST': os.environ.get('POSTGRES_HOST'),
+            'PORT': os.environ.get('POSTGRES_PORT'),
+            'CONN_MAX_AGE': 0,
+        },
+        'census_gis': {
+            'ENGINE': 'django_db_geventpool.backends.postgis',
+            'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+            'OPTIONS': {
+                    'options': '-c search_path=django,census_gis',
                     'MAX_CONNS': 20
                 },
             'NAME': os.environ.get('POSTGRES_NAME'),

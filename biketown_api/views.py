@@ -13,15 +13,15 @@ from rest_framework import viewsets
 from rest_framework.filters import SearchFilter, OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend, FilterSet
 
-from biketown_api.models import BiketownTrips
-from biketown_api.serializers import BiketownTripsSerializer
+from biketown_api.models import BiketownTrips, BiketownHubs, TripCounts
+from biketown_api.serializers import BiketownTripsSerializer, BiketownHubsSerializer, TripsCountsSerializer
 
 class BiketownTripsViewSet(viewsets.ReadOnlyModelViewSet):
     """
     This viewset will provide a list of Biketown Trips.
     """
 
-    queryset = BiketownTrips.objects.all()
+    queryset = BiketownTrips.objects.prefetch_related("start_hub", "end_hub").all()
     serializer_class = BiketownTripsSerializer
     # filter_backends = (SearchFilter,DjangoFilterBackend,OrderingFilter,)
     # search_fields = '__all__'

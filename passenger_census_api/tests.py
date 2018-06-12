@@ -21,7 +21,15 @@ class PassengerCensusRoutesEndpointsTestCase(TestCase):
     def test_list_200_response(self):
         response = self.client.get('/transportation-systems/passenger-census/routes/')
         assert response.status_code == 200
-        self.assertEqual(response.data['count'], 130)
+        self.assertEqual(len(response.data), 97)
+
+class PassengerCensusRoutesRetrieveEndpointsTestCase(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+    def test_list_200_response(self):
+        response = self.client.get('/transportation-systems/passenger-census/routes/15/')
+        assert response.status_code == 200
+        self.assertEqual(response.data['route_long_name'], "Belmont/NW 23rd")
 
 class PassengerCensusRetrieveViewSetTestCase(TestCase):
     def setUp(self):
