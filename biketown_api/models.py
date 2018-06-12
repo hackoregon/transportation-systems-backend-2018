@@ -37,6 +37,14 @@ class BiketownTrips(models.Model):
     multiple_rental = models.TextField(blank=True, null=True)
     duration_minutes = models.FloatField(blank=True, null=True)
 
+    @property
+    def start_point(self):
+        return self.start_hub.geom_4326
+
+    @property
+    def end_point(self):
+        return self.end_hub.geom_4326
+
     class Meta:
         managed = False
         db_table = 'biketown'

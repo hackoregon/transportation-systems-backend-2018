@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'trimet_stop_event_api',
     'trimet_gis_api',
     'odot_crash_api',
+    'multco_permits_api'
     ]
 
 MIDDLEWARE = [
