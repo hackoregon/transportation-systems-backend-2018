@@ -13,6 +13,9 @@ router.register(r'routes', views.PassengerCensusRoutesViewSet, base_name='passen
 router.register(r'', views.PassengerCensusRetrieveViewSet)
 router.register(r'routes/annual/average', views.PassengerCensusRoutesAnnualAvgViewSet, base_name='passenger-census')
 router.register(r'routes/annual/total', views.PassengerCensusRoutesAnnualTotalViewSet, base_name='passenger-census')
+router.register(r'annual/totals', views.PassengerCensusAnnualRollupViewSet, base_name='passenger-census')
+router.register(r'census-block/oregon/polygons', views.OrCensusBlockPolygonsViewSet, base_name='passenger-census')
+router.register(r'census-block/washington/polygons', views.WaCensusBlockPolygonsViewSet, base_name='passenger-census')
 
 router.register(r'census/info', views.PassengerCensusInfoViewSet, base_name='passenger-census')
 

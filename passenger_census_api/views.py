@@ -20,8 +20,8 @@ from passenger_census_api.queries import getAvgs, getCensusTotals, getTotals, ro
 from .routes import routes
 
 
-from passenger_census_api.models import PassengerCensus
-from passenger_census_api.serializers import PassengerCensusSerializer, PassengerCensusAnnualSerializer, PassengerCensusInfoSerializer
+from passenger_census_api.models import PassengerCensus, AnnualRouteRidership, OrCensusBlockPolygons, WaCensusBlockPolygons
+from passenger_census_api.serializers import PassengerCensusSerializer, PassengerCensusAnnualSerializer, PassengerCensusInfoSerializer, AnnualRouteRidershipSerializer, OrCensusBlockPolygonsSerializer, WaCensusBlockPolygonsSerializer
 
 
 class LargeResultsSetPagination(PageNumberPagination):
@@ -206,3 +206,15 @@ class PassengerCensusRoutesAnnualTotalViewSet(viewsets.ViewSetMixin, generics.Li
             return Response('Missing Route Number paramater', status=status.HTTP_400_BAD_REQUEST)
 
     # filter_fields = ['route_number',]
+
+class PassengerCensusAnnualRollupViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = AnnualRouteRidership.objects.all()
+    serializer_class = AnnualRouteRidershipSerializer
+
+class OrCensusBlockPolygonsViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = OrCensusBlockPolygons.objects.all()
+    serializer_class = OrCensusBlockPolygonsSerializer
+
+class WaCensusBlockPolygonsViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = WaCensusBlockPolygons.objects.all()
+    serializer_class = WaCensusBlockPolygonsSerializer

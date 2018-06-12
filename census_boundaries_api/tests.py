@@ -1,23 +1,23 @@
 from django.test import TestCase
-from multco_permits_api.models import CurrentPermits, ArchivedPermits
+from census_boundaries_api.models import Tl201741Tabblock10, Tl201753Tabblock10
 from rest_framework.test import APIClient, RequestsClient
 
-class CurrentPermitsTest(TestCase):
+class CensusTest(TestCase):
     """ Test for Crash model """
 
     def setUp(self):
         pass
 
-class CurrentPermitsListEndpointsTestCase(TestCase):
+class Tl201741Tabblock10ListEndpointsTestCase(TestCase):
     def setUp(self):
         self.client = APIClient()
     def test_list_200_response(self):
-        response = self.client.get('/transportation-systems/multnomah-county-permits/current/')
+        response = self.client.get('/transportation-systems/census-boundaries/Tl201741Tabblock10/')
         assert response.status_code == 200
 
-class ArchivedPermitsListEndpointsTestCase(TestCase):
+class Tl201753Tabblock10ListEndpointsTestCase(TestCase):
     def setUp(self):
         self.client = APIClient()
     def test_list_200_response(self):
-        response = self.client.get('/transportation-systems/multnomah-county-permits/archived/')
+        response = self.client.get('/transportation-systems/census-boundaries/Tl201753Tabblock10/')
         assert response.status_code == 200
