@@ -15,10 +15,12 @@ from django_filters.rest_framework import DjangoFilterBackend, FilterSet
 
 from origin_destination_api.models import OriginDestination, ResidenceAreaCharacteristics, WorkplaceAreaCharacteristics, Xwalk
 from origin_destination_api.serializers import OriginDestinationSerializer, ResidenceAreaCharacteristicsSerializer, XwalkSerializer, WorkplaceAreaCharacteristicsSerializer
+from .dictionary import originDestinationDefinitions, originDestinationCharacteristicsDefinitions
+import json
 
 class OriginDestinationViewSet(viewsets.ReadOnlyModelViewSet):
     """
-    This viewset will provide a list of Biketown Trips.
+    This viewset will provide a list of Portland, Oregon Vicinity Origins and Destinations as per: LEHD Origin-Destination Employment Statistics (https://lehd.ces.census.gov/data/lodes/LODES7/LODESTechDoc7.3.pdf)
     """
 
     queryset = OriginDestination.objects.all()
@@ -47,3 +49,14 @@ class XwalkViewSet(viewsets.ReadOnlyModelViewSet):
 
     queryset = Xwalk.objects.all()
     serializer_class = XwalkSerializer
+
+class DefinitionsListViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
+
+    def list(self, request, *args, **kwargs):
+        # with open('./routes.json') as handle:
+        odd = json.loads(originDestinationDefinitions)
+        odc = json.loads(originDestinationCharacteristicsDefinitions)
+        return Response({
+            "originDestinationDefinitions": odd,
+            "originDestinationCharacteristicsDefinitions": odc
+            })

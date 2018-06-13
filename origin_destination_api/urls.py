@@ -12,7 +12,7 @@ router.register(r'residence-area-characteristics', views.ResidenceAreaCharacteri
 router.register(r'workplace-area-characteristics', views.WorkplaceAreaCharacteristicsViewSet)
 router.register(r'origin-destination', views.OriginDestinationViewSet)
 router.register(r'xwalk', views.XwalkViewSet)
-
+router.register(r'definitions', views.DefinitionsListViewSet,  base_name="origin-destination")
 # schema_view = get_swagger_view(title='Hack Oregon 2018 Transportation Systems APIs')
 
 urlpatterns = [
