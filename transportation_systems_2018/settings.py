@@ -49,10 +49,10 @@ INSTALLED_APPS = [
     'safety_hotline_api',
     'biketown_api',
     'trimet_stop_event_api',
-    'trimet_gis_api',
     'odot_crash_api',
+    'multco_permits_api',
+    'origin_destination_api', 
     'civic_sandbox',
-
     ]
 
 MIDDLEWARE = [
@@ -113,6 +113,17 @@ DATABASES = {
         'HOST': os.environ.get('POSTGRES_HOST'),
         'PORT': os.environ.get('POSTGRES_PORT')
     },
+    'multnomah_county_permits': {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'OPTIONS': {
+                'options': '-c search_path=django,multnomah_county_permits'
+            },
+        'NAME': os.environ.get('POSTGRES_NAME'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'HOST': os.environ.get('POSTGRES_HOST'),
+        'PORT': os.environ.get('POSTGRES_PORT')
+    },
     'passenger_census': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
@@ -129,17 +140,6 @@ DATABASES = {
         'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
         'OPTIONS': {
                 'options': '-c search_path=django,trimet_stop_events'
-            },
-        'NAME': os.environ.get('POSTGRES_NAME'),
-        'USER': os.environ.get('POSTGRES_USER'),
-        'HOST': os.environ.get('POSTGRES_HOST'),
-        'PORT': os.environ.get('POSTGRES_PORT')
-    },
-    'trimet_gis': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-        'OPTIONS': {
-                'options': '-c search_path=django,trimet_gis'
             },
         'NAME': os.environ.get('POSTGRES_NAME'),
         'USER': os.environ.get('POSTGRES_USER'),
@@ -209,6 +209,19 @@ if DEBUG == False:
             'PORT': os.environ.get('POSTGRES_PORT'),
             'CONN_MAX_AGE': 0,
         },
+        'multnomah_county_permits': {
+            'ENGINE': 'django_db_geventpool.backends.postgis',
+            'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+            'NAME': os.environ.get('POSTGRES_NAME'),
+            'OPTIONS': {
+                    'options': '-c search_path=django,multnomah_county_permits',
+                    'MAX_CONNS': 20
+                },
+            'USER': os.environ.get('POSTGRES_USER'),
+            'HOST': os.environ.get('POSTGRES_HOST'),
+            'PORT': os.environ.get('POSTGRES_PORT'),
+            'CONN_MAX_AGE': 0,
+        },
         'passenger_census': {
             'ENGINE': 'django_db_geventpool.backends.postgis',
             'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
@@ -227,19 +240,6 @@ if DEBUG == False:
             'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
             'OPTIONS': {
                     'options': '-c search_path=django,trimet_stop_events',
-                    'MAX_CONNS': 20
-                },
-            'NAME': os.environ.get('POSTGRES_NAME'),
-            'USER': os.environ.get('POSTGRES_USER'),
-            'HOST': os.environ.get('POSTGRES_HOST'),
-            'PORT': os.environ.get('POSTGRES_PORT'),
-            'CONN_MAX_AGE': 0,
-        },
-        'trimet_gis': {
-            'ENGINE': 'django_db_geventpool.backends.postgis',
-            'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-            'OPTIONS': {
-                    'options': '-c search_path=django,trimet_gis',
                     'MAX_CONNS': 20
                 },
             'NAME': os.environ.get('POSTGRES_NAME'),
