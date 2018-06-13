@@ -40,9 +40,6 @@ def sandbox_view_factory(model_class, serializer_class, multi_geom_class, geom_f
 
             if settings.DEBUG: print('boundary calculation complete')
             
-            min_date = dates['min_date']
-            max_date = dates['max_date']
-
         except model_class.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
