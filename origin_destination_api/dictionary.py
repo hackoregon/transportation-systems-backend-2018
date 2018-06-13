@@ -9,7 +9,7 @@ originDestinationDefinitions = json.dumps(
     }
  )
 
-originDestinationCharacteristicsDefinitions= json.dumps(
+originDestinationCharacteristicsDefinitions = json.dumps(
       {
         "h_geocode": "Residence census block",
         "c000": "Total number of jobs",
@@ -55,4 +55,53 @@ originDestinationCharacteristicsDefinitions= json.dumps(
         "cs02": "Number of jobs for workers with Sex: Femal",
         "year": "Date on which data was created, formatted as YYYYMMDD"
       }
+)
+
+originDestinationXwalkDefinitions = json.dumps(
+    {
+            "tabblk2010": "2010 Census Tabulation Block Code",
+            "st":"FIPS State Code",
+            "stusps":"USPS State Code",
+            "stname":"State Name",
+            "cty":"FIPS County Code",
+            "ctyname":"County or County Equivalent Name",
+            "trct":"Census Tract Code",
+            "trctname":"Census Tract Code",
+            "bgrp":"Census Tract Code",
+            "bgrpname":"Census Blockgroup Name, formatted with Tract, County, and State",
+            "cbsa":"CBSA (Metropolitan/Micropolitan Area) Code",
+            "cbsaname":"CBSA (Metropolitan/Micropolitan Area) Name",
+            "zcta":"ZIP Code Tabulation Area (ZCTA) Code",
+            "zctaname":"ZCTA Name",
+            "stplc":"Nationally Unique Place Code, (FIPS State + FIPS Place)",
+            "stplcname":"Place Name",
+            "ctycsub":"Nationally Unique County Subdivision Code, (FIPS State + FIPS County + FIPS County Subdivision)",
+            "ctycsubname":"County Subdivision Name",
+            "stcd115":"Nationally Unique 115th Congressional District Code, (FIPS State + 2-digit District Number)",
+            "stcd115name":"115th Congressional District Name",
+            "stsldl":"Nationally Unique State Legislative District, Lower Chamber, (FIPS State + 3-digit District Number)",
+            "stsldlname":"State Legislative District Chamber, Lower Chamber",
+            "stsldu":"Nationally Unique State Legislative District, Upper Chamber, (FIPS State + 3-digit District Number) ",
+            "stslduname":"State Legislative District Chamber, Upper Chamber Chamber",
+            "stschool":"Nationally Unique Unified/Elementary School District Code, (FIPS State + 5-digit Local Education Agency Code)",
+            "stschoolname":"Unified/Elementary School District Name",
+            "stsecon":"Nationally Unique Secondary School District Code, (FIPS State + 5-digit Local Education Agency Code)",
+            "stseconname":"Secondary School District Name",
+            "trib":"American Indian /Alaska Native/Native Hawaiian Area Census Code",
+            "tribname":"American Indian /Alaska Native/Native Hawaiian Area Name",
+            "tsub":"American Indian Tribal Subdivision Code",
+            "tsubname":"American Indian Tribal Subdivision Name",
+            "stanrc":"Nationally Unique Alaska Native Regional Corporation (ANRC) Code (FIPS State + FIPS ANRC)",
+            "stanrcname":"Alaska Native Regional Corporation Name",
+            "necta":"New England City and Town Area (NECTA) Code",
+            "nectaname":"New England City and Town Area (NECTA) Name",
+            "mil":"Military Installation Landmark Code",
+            "milname":"Military Installation Name",
+            "stwib":"Nationally Unique Workforce Innovation Board (WIB) Area Code (FIPS State + state-provided 6-digit WIB Area Code)",
+            "stwibname":"Workforce Innovation Board Area Name",
+            "blklatdd":"Latitude (in decimal degrees) of block internal point",
+            "blklondd":"Longitude (in decimal degrees) of block internal point",
+            "createdate":"Date on which data was created, formatted as YYYYMMDD",
+            "geom_intpt_4326":"Geometry"
+    }
 )

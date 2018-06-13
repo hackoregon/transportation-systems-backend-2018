@@ -15,7 +15,7 @@ from django_filters.rest_framework import DjangoFilterBackend, FilterSet
 
 from origin_destination_api.models import OriginDestination, ResidenceAreaCharacteristics, WorkplaceAreaCharacteristics, Xwalk
 from origin_destination_api.serializers import OriginDestinationSerializer, ResidenceAreaCharacteristicsSerializer, XwalkSerializer, WorkplaceAreaCharacteristicsSerializer
-from .dictionary import originDestinationDefinitions, originDestinationCharacteristicsDefinitions
+from .dictionary import originDestinationDefinitions, originDestinationCharacteristicsDefinitions, originDestinationXwalkDefinitions
 import json
 
 class OriginDestinationViewSet(viewsets.ReadOnlyModelViewSet):
@@ -56,7 +56,9 @@ class DefinitionsListViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
         # with open('./routes.json') as handle:
         odd = json.loads(originDestinationDefinitions)
         odc = json.loads(originDestinationCharacteristicsDefinitions)
+        odx = json.loads (originDestinationXwalkDefinitions)
         return Response({
             "originDestinationDefinitions": odd,
-            "originDestinationCharacteristicsDefinitions": odc
+            "originDestinationCharacteristicsDefinitions": odc,
+            "originDestinationXwalkDefinitions": odx
             })

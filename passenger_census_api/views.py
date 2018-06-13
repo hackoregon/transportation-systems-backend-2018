@@ -42,10 +42,10 @@ class PassengerCensusRoutesViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
     """
     This viewset will provide a list of distinct routes in the Passenger Census by TRIMET.
     """
+    def get_queryset(self):
+        pass
 
-    pagination_class = LargeResultsSetPagination
     def list(self, request, *args, **kwargs):
-        # with open('./routes.json') as handle:
         dictdump = json.loads(routes)
         return Response(dictdump)
 
