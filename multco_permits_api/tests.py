@@ -1,23 +1,23 @@
 from django.test import TestCase
-from trimet_stop_event_api.models import TrimetStopEvents, TotalsOnsByHour
+from multco_permits_api.models import CurrentPermits, ArchivedPermits
 from rest_framework.test import APIClient, RequestsClient
 
-class TrimetStopEventsTest(TestCase):
+class CurrentPermitsTest(TestCase):
     """ Test for Crash model """
 
     def setUp(self):
         pass
 
-class TrimetStopEventsListEndpointsTestCase(TestCase):
+class CurrentPermitsListEndpointsTestCase(TestCase):
     def setUp(self):
         self.client = APIClient()
     def test_list_200_response(self):
-        response = self.client.get('/transportation-systems/trimet-stop-events/trimet-stop-events/')
+        response = self.client.get('/transportation-systems/multnomah-county-permits/current/')
         assert response.status_code == 200
 
-class TrimetStopEventsTotalsListEndpointsTestCase(TestCase):
+class ArchivedPermitsListEndpointsTestCase(TestCase):
     def setUp(self):
         self.client = APIClient()
     def test_list_200_response(self):
-        response = self.client.get('/transportation-systems/trimet-stop-events/totals/')
+        response = self.client.get('/transportation-systems/multnomah-county-permits/archived/')
         assert response.status_code == 200

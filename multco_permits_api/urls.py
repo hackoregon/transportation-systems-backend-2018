@@ -1,15 +1,15 @@
 from django.conf.urls import url, include
 from rest_framework.routers import DefaultRouter
 
-from trimet_stop_event_api import views
+from multco_permits_api import views
 
 # from rest_framework.schemas import get_schema_view
 # from rest_framework_swagger.views import get_swagger_view
 
 
 router = DefaultRouter()
-router.register(r'trimet-stop-events', views.TrimetStopEventsViewSet)
-router.register(r'totals', views.TrimetStopEventsViewSet)
+router.register(r'current', views.CurrentPermitsViewSet)
+router.register(r'archived', views.ArchivedPermitsViewSet)
 
 
 # schema_view = get_swagger_view(title='Hack Oregon 2018 Transportation Systems APIs')

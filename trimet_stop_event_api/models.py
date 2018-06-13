@@ -1,7 +1,23 @@
 from django.db import models
 
+from django.contrib.gis.db import models
+
+
 import django.db.models.options as options
 options.DEFAULT_NAMES = options.DEFAULT_NAMES + ('in_db',)
+
+class TotalsOnsByHour(models.Model):
+    service_date = models.DateField(blank=True, null=True)
+    service_key = models.TextField(blank=True, null=True)
+    weekday = models.TextField(blank=True, null=True)
+    hour_of_day = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
+    total_ons = models.BigIntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'totals_ons_by_hour'
+        in_db = 'trimet_stop_events'
+
 
 class TrimetStopEvents(models.Model):
     service_date = models.DateField(blank=True, null=True)
@@ -28,7 +44,9 @@ class TrimetStopEvents(models.Model):
     left_there = models.IntegerField(blank=True, null=True)
     travel_miles = models.FloatField(blank=True, null=True)
     travel_seconds = models.IntegerField(blank=True, null=True)
-    id = models.AutoField(primary_key=True)
+    x_coordinate = models.FloatField(blank=True, null=True)
+    y_coordinate = models.FloatField(blank=True, null=True)
+    geom_point_4326 = models.GeometryField(blank=True, null=True)
 
     class Meta:
         managed = False

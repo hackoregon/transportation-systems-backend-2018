@@ -1,6 +1,8 @@
 
 from rest_framework import serializers
-# from rest_framework_gis import serializers
+from rest_framework_gis import serializers
+from rest_framework.serializers import HyperlinkedRelatedField
+
 from rest_framework.serializers import CharField
 
 from odot_crash_api.models import Crash, CrashHr, CrashSvrty, CrashTyp, CollisTyp, Participant, Vehicle, Actn, Cause, Evnt, Err, InvstgAgy, VhclOwnshp, VhclTyp, VhclUse, WthrCond
@@ -53,7 +55,7 @@ class WthrCondSerializer(serializers.ModelSerializer):
         model = WthrCond
         fields = ('__all__')
 
-class CrashSerializer(serializers.ModelSerializer):
+class CrashSerializer(serializers.GeoFeatureModelSerializer):
     crash_hour = CrashHrSerializer()
     crash_severity = CrashSvrtySerializer()
     crash_type = CrashTypSerializer()
@@ -69,6 +71,8 @@ class CrashSerializer(serializers.ModelSerializer):
     class Meta:
         model = Crash
         fields = '__all__'
+        geo_field = 'geom_point'
+        id = 'crash_id'
 
 class ActnSerializer(serializers.ModelSerializer):
 
@@ -92,7 +96,7 @@ class ParticipantSerializer(serializers.ModelSerializer):
     partic_err_1_cd = ErrSerializer()
     partic_err_2_cd = ErrSerializer()
     partic_err_3_cd = ErrSerializer()
-    crash_info = serializers.HyperlinkedRelatedField(
+    crash_info = HyperlinkedRelatedField(
         read_only=True,
         view_name='crash-detail'
     )
@@ -132,7 +136,7 @@ class VehicleSerializer(serializers.ModelSerializer):
     vhcl_typ_cd = VhclTypSerializer()
     vhcl_use_cd = VhclUseSerializer()
 
-    crash_info = serializers.HyperlinkedRelatedField(
+    crash_info = HyperlinkedRelatedField(
         read_only=True,
         view_name='vehicle-detail'
     )

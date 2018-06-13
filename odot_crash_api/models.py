@@ -243,6 +243,7 @@ class Crash(models.Model):
     tot_alchl_impaired_drvr_inv_fatal_cnt = models.IntegerField(blank=True, null=True)
     tot_drvr_age_01_20_cnt = models.IntegerField(blank=True, null=True)
     lane_rdwy_dprt_crash_flg = models.TextField(blank=True, null=True)
+    geom_point = models.GeometryField(blank=True, null=True)
 
     class Meta:
         managed = False
