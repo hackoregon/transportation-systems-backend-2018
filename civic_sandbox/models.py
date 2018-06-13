@@ -1,5 +1,8 @@
 from django.contrib.gis.db import models
 
+import django.db.models.options as options
+options.DEFAULT_NAMES = options.DEFAULT_NAMES + ('in_db',)
+
 class SafetyHotlineTickets(models.Model):
     id = models.IntegerField(primary_key=True)
     date_created = models.DateField()
