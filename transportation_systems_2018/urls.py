@@ -16,4 +16,5 @@ urlpatterns = [
     url(r'^transportation-systems/biketown/', include('biketown_api.urls')),
     url(r'^transportation-systems/trimet-stop-events/', include('trimet_stop_event_api.urls')),
     url(r'^transportation-systems/trimet-gis/', include('trimet_gis_api.urls')),
+    path('transportation-systems/sandbox/', include('civic_sandbox.urls')),
 ]
