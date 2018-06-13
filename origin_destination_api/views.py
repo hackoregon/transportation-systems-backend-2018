@@ -28,7 +28,7 @@ class OriginDestinationViewSet(viewsets.ReadOnlyModelViewSet):
 
 class ResidenceAreaCharacteristicsViewSet(viewsets.ReadOnlyModelViewSet):
     """
-    This viewset will provide a list of Biketown Trips.
+    This viewset will provide a list of Portland, Oregon Vicinity Residence Area Characteristics as per: LEHD Origin-Destination Employment Statistics (https://lehd.ces.census.gov/data/lodes/LODES7/LODESTechDoc7.3.pdf)
     """
 
     queryset = ResidenceAreaCharacteristics.objects.all()
@@ -36,7 +36,7 @@ class ResidenceAreaCharacteristicsViewSet(viewsets.ReadOnlyModelViewSet):
 
 class WorkplaceAreaCharacteristicsViewSet(viewsets.ReadOnlyModelViewSet):
     """
-    This viewset will provide a list of Biketown Trips.
+    This viewset will provide a list of Portland, Oregon Vicinity Workplace Area Characteristics as per: LEHD Origin-Destination Employment Statistics (https://lehd.ces.census.gov/data/lodes/LODES7/LODESTechDoc7.3.pdf)
     """
 
     queryset = WorkplaceAreaCharacteristics.objects.all()
@@ -44,7 +44,7 @@ class WorkplaceAreaCharacteristicsViewSet(viewsets.ReadOnlyModelViewSet):
 
 class XwalkViewSet(viewsets.ReadOnlyModelViewSet):
     """
-    This viewset will provide a list of Biketown Trips.
+    This viewset will provide a list of the Portland, Oregon Vicinity Geography Crosswalks as per: LEHD Origin-Destination Employment Statistics (https://lehd.ces.census.gov/data/lodes/LODES7/LODESTechDoc7.3.pdf)
     """
 
     queryset = Xwalk.objects.all()
