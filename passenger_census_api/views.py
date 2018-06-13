@@ -18,6 +18,7 @@ import coreapi, json
 import operator
 from passenger_census_api.queries import getAvgs, getCensusTotals, getTotals, routeDetailLookup
 from .routes import routes
+from .national import national
 
 
 from passenger_census_api.models import PassengerCensus, AnnualRouteRidership, OrCensusBlockPolygons, WaCensusBlockPolygons
@@ -37,6 +38,33 @@ class PassengerCensusViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
 
     queryset = PassengerCensus.objects.all()
     serializer_class = PassengerCensusSerializer
+
+class NationalTotalsViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
+    """
+    This viewset will provide a list of distinct routes in the Passenger Census by TRIMET.
+    """
+    def get_queryset(self):
+        pass
+
+    def list(self, request, *args, **kwargs):
+        dictdump = json.loads(national)
+        return Response(dictdump)
+
+class NationalDetail(APIView):
+    """
+    Retrieve, update or delete a snippet instance.
+    """
+    def get_object(self, pk):
+
+        national = nationalDetailLookup(pk)
+        return national
+
+    def get(self, request, pk, format=None):
+        try:
+            national = self.get_object(pk)
+            return Response(national)
+        except:
+            return Response('Year Not Found', status=status.HTTP_404_NOT_FOUND)
 
 class PassengerCensusRoutesViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
     """
