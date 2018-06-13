@@ -13,21 +13,21 @@ from rest_framework import viewsets
 from rest_framework.filters import SearchFilter, OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend, FilterSet
 
-from trimet_gis_api.models import TmBoundary, TmParkride
-from trimet_gis_api.serializers import TmBoundarySerializer, TmParkrideSerializer
+from multco_permits_api.models import CurrentPermits, ArchivedPermits
+from multco_permits_api.serializers import CurrentPermitsSerializer, ArchivedPermitsSerializer
 
-class TmBoundaryViewSet(viewsets.ReadOnlyModelViewSet):
+class CurrentPermitsViewSet(viewsets.ReadOnlyModelViewSet):
     """
-    This viewset will provide a list of Trimet Boundaries
-    """
-
-    queryset = TmBoundary.objects.all()
-    serializer_class = TmBoundarySerializer
-
-class TmParkrideViewSet(viewsets.ReadOnlyModelViewSet):
-    """
-    This viewset will provide a list of Trimet Parkride
+    This viewset will provide a list of Biketown Trips.
     """
 
-    queryset = TmParkride.objects.all()
-    serializer_class = TmParkrideSerializer
+    queryset = CurrentPermits.objects.all()
+    serializer_class = CurrentPermitsSerializer
+
+class ArchivedPermitsViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    This viewset will provide a list of Biketown Trips.
+    """
+
+    queryset = ArchivedPermits.objects.all()
+    serializer_class = ArchivedPermitsSerializer

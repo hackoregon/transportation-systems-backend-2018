@@ -7,6 +7,7 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 
 from rest_framework import generics, permissions, renderers, viewsets, status, mixins
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework.pagination import PageNumberPagination
@@ -15,12 +16,12 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend, FilterSet
 import coreapi, json
 import operator
-from passenger_census_api.queries import getAvgs, getCensusTotals, getTotals
+from passenger_census_api.queries import getAvgs, getCensusTotals, getTotals, routeDetailLookup
+from .routes import routes
 
 
-
-from passenger_census_api.models import PassengerCensus
-from passenger_census_api.serializers import PassengerCensusSerializer, PassengerCensusRoutesSerializer, PassengerCensusAnnualSerializer, PassengerCensusInfoSerializer
+from passenger_census_api.models import PassengerCensus, AnnualRouteRidership, OrCensusBlockPolygons, WaCensusBlockPolygons
+from passenger_census_api.serializers import PassengerCensusSerializer, PassengerCensusAnnualSerializer, PassengerCensusInfoSerializer, AnnualRouteRidershipSerializer, OrCensusBlockPolygonsSerializer, WaCensusBlockPolygonsSerializer
 
 
 class LargeResultsSetPagination(PageNumberPagination):
@@ -42,9 +43,27 @@ class PassengerCensusRoutesViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
     This viewset will provide a list of distinct routes in the Passenger Census by TRIMET.
     """
 
-    queryset = PassengerCensus.objects.order_by('route_number').values('route_number').distinct()
-    serializer_class = PassengerCensusRoutesSerializer
     pagination_class = LargeResultsSetPagination
+    def list(self, request, *args, **kwargs):
+        # with open('./routes.json') as handle:
+        dictdump = json.loads(routes)
+        return Response(dictdump)
+
+class RouteDetail(APIView):
+    """
+    Retrieve, update or delete a snippet instance.
+    """
+    def get_object(self, pk):
+
+        route = routeDetailLookup(pk)
+        return route
+
+    def get(self, request, pk, format=None):
+        try:
+            route = self.get_object(pk)
+            return Response(route)
+        except:
+            return Response('Route Number not found', status=status.HTTP_404_NOT_FOUND)
 
 class PassengerCensusRetrieveViewSet(viewsets.ViewSetMixin, generics.RetrieveAPIView):
     """
@@ -166,6 +185,7 @@ class PassengerCensusRoutesAnnualTotalViewSet(viewsets.ViewSetMixin, generics.Li
     def list(self, request, *args, **kwargs):
         if request.GET.get('route', ' ') != ' ':
             this_route_number = request.GET.get('route', ' ')
+
             try:
                 stops = PassengerCensus.objects.filter(route_number=this_route_number)
                 if stops.exists():
@@ -186,3 +206,15 @@ class PassengerCensusRoutesAnnualTotalViewSet(viewsets.ViewSetMixin, generics.Li
             return Response('Missing Route Number paramater', status=status.HTTP_400_BAD_REQUEST)
 
     # filter_fields = ['route_number',]
+
+class PassengerCensusAnnualRollupViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = AnnualRouteRidership.objects.all()
+    serializer_class = AnnualRouteRidershipSerializer
+
+class OrCensusBlockPolygonsViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = OrCensusBlockPolygons.objects.all()
+    serializer_class = OrCensusBlockPolygonsSerializer
+
+class WaCensusBlockPolygonsViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = WaCensusBlockPolygons.objects.all()
+    serializer_class = WaCensusBlockPolygonsSerializer
