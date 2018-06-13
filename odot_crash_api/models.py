@@ -101,7 +101,7 @@ class WthrCond(models.Model):
 class Crash(models.Model):
     crash_id = models.IntegerField(primary_key=True)
     ser_no = models.TextField(blank=True, null=True)
-    crash_dt = models.TextField(blank=True, null=True)
+    crash_dt = models.DateField(blank=True, null=True)
     crash_mo_no = models.IntegerField(blank=True, null=True)
     crash_day_no = models.IntegerField(blank=True, null=True)
     crash_yr_no = models.IntegerField(blank=True, null=True)
