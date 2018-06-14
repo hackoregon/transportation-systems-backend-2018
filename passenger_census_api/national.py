@@ -3,12 +3,12 @@ import json
 national = json.dumps(
 [
   {
-    "year": "2002",
-    "total_ridership_millions": "265"
+    "year": 2000,
+    "total_ridership_millions": 265
   },
   {
-    "year": "2003",
-    "total_ridership_millions": "260"
+    "year": 2003,
+    "total_ridership_millions": 260
   },
   {
     "year": "2004",
