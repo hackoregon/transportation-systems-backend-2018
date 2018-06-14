@@ -18,7 +18,7 @@ from multco_permits_api.serializers import CurrentPermitsSerializer, ArchivedPer
 
 class CurrentPermitsViewSet(viewsets.ReadOnlyModelViewSet):
     """
-    This viewset will provide a list of Biketown Trips.
+    This viewset will provide a list of Current Multnomah County Work Permits
     """
 
     queryset = CurrentPermits.objects.all()
@@ -26,7 +26,7 @@ class CurrentPermitsViewSet(viewsets.ReadOnlyModelViewSet):
 
 class ArchivedPermitsViewSet(viewsets.ReadOnlyModelViewSet):
     """
-    This viewset will provide a list of Biketown Trips.
+    This viewset will provide a list of Historical Multnomah County Work Permits
     """
 
     queryset = ArchivedPermits.objects.all()

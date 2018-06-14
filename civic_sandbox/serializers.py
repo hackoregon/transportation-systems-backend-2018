@@ -5,5 +5,11 @@ from . import models
 class SafetyHotlineSerializer(GeoFeatureModelSerializer):
     class Meta:
         model = models.SafetyHotlineTickets
-        fields = ('date_created', 'description')
-        geo_field = "geom_4326"
+        fields = '__all__'
+        geo_field = 'geom_4326'
+
+class CrashSerializer(GeoFeatureModelSerializer):
+    class Meta:
+        model = models.Crash
+        fields = '__all__'
+        geo_field = 'geom_point'
