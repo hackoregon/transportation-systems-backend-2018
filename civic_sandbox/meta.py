@@ -18,3 +18,24 @@ safety_hotline_meta = {
     'max_date': '2018'
     },
   }
+
+#TODO: 4 digit years 
+crash_meta = {
+  'attributes': {
+    'primary': {
+      'field': None,
+      'name': None,
+    },
+    'secondary': {
+      'field': None,
+      'name': None,
+    },
+  },
+    'dates': {
+    'date_attribute': 'crash_dt',
+    'date_granularity': 'year',
+    'default_date_filter': '14',
+    'min_date': '04', 
+    'max_date': '14'
+    },
+  }
