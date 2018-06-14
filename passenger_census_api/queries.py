@@ -3,6 +3,8 @@ from django.db.models import Sum, Count, Case, When, Value, CharField
 from django.db.models.functions import ExtractYear
 import operator, json
 from .routes import routes
+from .national import national
+
 
 def getYearlyAvg(stops):
         annuals = stops.values(year=ExtractYear("summary_begin_date")).annotate(
@@ -60,12 +62,12 @@ def getAvgs(stops):
         if  "avg_saturday_sum_ons" not in week:
             week["avg_saturday_sum_ons"] = 0
             week["avg_saturday_sum_offs"]  = 0
-            week["avg_saturday_total_stops"] = 0
+            week["avg_saturday_stops"] = 0
             week["saturday_census"] = False
         if "avg_sunday_sum_ons" not in week:
             week["avg_sunday_sum_ons"] = 0
             week["avg_sunday_sum_offs"]  = 0
-            week["avg_sunday_total_stops"] = 0
+            week["avg_sunday_stops"] = 0
             week["sunday_census"] = False
         week["avg_weekly_sum_ons"] = week["avg_weekday_sum_ons"] + week["avg_saturday_sum_ons"] + week["avg_sunday_sum_ons"]
         week["avg_weekly_sum_offs"] = week["avg_weekday_sum_offs"] + week["avg_saturday_sum_offs"] + week["avg_sunday_sum_offs"]

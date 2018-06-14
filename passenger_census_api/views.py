@@ -14,12 +14,12 @@ from rest_framework.pagination import PageNumberPagination
 
 from rest_framework.filters import SearchFilter, OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend, FilterSet
+import django_filters
 import coreapi, json
 import operator
-from passenger_census_api.queries import getAvgs, getCensusTotals, getTotals, routeDetailLookup
+from passenger_census_api.queries import getAvgs, getCensusTotals, getTotals, routeDetailLookup, nationalDetailLookup
 from .routes import routes
 from .national import national
-
 
 from passenger_census_api.models import PassengerCensus, AnnualRouteRidership, OrCensusBlockPolygons, WaCensusBlockPolygons
 from passenger_census_api.serializers import PassengerCensusSerializer, PassengerCensusAnnualSerializer, PassengerCensusInfoSerializer, AnnualRouteRidershipSerializer, OrCensusBlockPolygonsSerializer, WaCensusBlockPolygonsSerializer
@@ -30,18 +30,24 @@ class LargeResultsSetPagination(PageNumberPagination):
     page_size_query_param = 'page_size'
     max_page_size = 4000
 
+class PassengerCensusListFilter(DjangoFilterBackend):
+    begin_date = django_filters.DateFilter('summary_begin_date', lookup_expr=['exact',])
+    class Meta:
+        model = PassengerCensus
+        fields = ['begin_date']
 
 class PassengerCensusViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
     """
-    This viewset will provide a list of individual Passenger Census by TRIMET.
+    This viewset will provide a list of individual Passenger Census counts by TRIMET.
     """
 
     queryset = PassengerCensus.objects.all()
+    filter_backends = (PassengerCensusListFilter,)
     serializer_class = PassengerCensusSerializer
 
 class NationalTotalsViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
     """
-    This viewset will provide a list of distinct routes in the Passenger Census by TRIMET.
+    This viewset will provide a list of annual national transporation ridership counts based on Transit Report's report: http://tram.mcgill.ca/Research/Publications/Transit_Ridership_overtime.pdf.
     """
     def get_queryset(self):
         pass
@@ -52,7 +58,7 @@ class NationalTotalsViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
 
 class NationalDetail(APIView):
     """
-    Retrieve, update or delete a snippet instance.
+    This viewset returns a specific year's national ridership count based on Transit Report's report: http://tram.mcgill.ca/Research/Publications/Transit_Ridership_overtime.pdf.
     """
     def get_object(self, pk):
 
@@ -62,6 +68,7 @@ class NationalDetail(APIView):
     def get(self, request, pk, format=None):
         try:
             national = self.get_object(pk)
+            print(pk)
             return Response(national)
         except:
             return Response('Year Not Found', status=status.HTTP_404_NOT_FOUND)
@@ -79,7 +86,7 @@ class PassengerCensusRoutesViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
 
 class RouteDetail(APIView):
     """
-    Retrieve, update or delete a snippet instance.
+    This viewset will provide a specific route.
     """
     def get_object(self, pk):
 
@@ -117,6 +124,123 @@ class PassengerCensusInfoViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
         census = getCensusTotals(census)
         return Response(census)
 
+class PassengerCensusAnnualBussesTotalViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
+    """
+    This viewset will provide a info about Annual System Wide Totals for bus routes.
+    """
+    serializer_class = PassengerCensusInfoSerializer
+
+    def list(self, request, *args, **kwargs):
+        census = PassengerCensus.objects.filter(route_number__in=["1", "2", "4", "4", "6", "8", "9", "10", "11", "12", "14", "15", "16", "17", "18", "19", "20", "20", "21", "22", "23", "24", "25", "29", "30", "32", "33", "34", "35", "36", "37", "38", "39", "42", "43", "44", "45", "46", "47", "48", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "61", "62", "63", "64", "65", "66", "67", "68", "70", "71", "72", "73", "74", "75", "76", "77", "78", "79", "80", "81", "82", "84", "85", "87", "88", "90", "92", "93", "94", "96", "97", "99", "152", "154", "155", "156", "203", "272", "291"])
+        weekly = getTotals(census)
+        return Response(weekly)
+
+class PassengerCensusAnnualBussesAvgViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
+    """
+    This viewset will provide a info about Annual System Wide Daily
+    Averages for bus routes.
+    """
+    serializer_class = PassengerCensusInfoSerializer
+
+    def list(self, request, *args, **kwargs):
+        print(routes_by_type)
+        census = PassengerCensus.objects.filter(route_number__in=["1", "2", "4", "4", "6", "8", "9", "10", "11", "12", "14", "15", "16", "17", "18", "19", "20", "20", "21", "22", "23", "24", "25", "29", "30", "32", "33", "34", "35", "36", "37", "38", "39", "42", "43", "44", "45", "46", "47", "48", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "61", "62", "63", "64", "65", "66", "67", "68", "70", "71", "72", "73", "74", "75", "76", "77", "78", "79", "80", "81", "82", "84", "85", "87", "88", "90", "92", "93", "94", "96", "97", "99", "152", "154", "155", "156", "203", "272", "291"])
+        weekly = getAvgs(census)
+        return Response(weekly)
+
+class PassengerCensusAnnualTrainsTotalViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
+    """
+    This viewset will provide a info about Annual System Wide Totals for the Max and WES Commuter Lines
+    """
+    serializer_class = PassengerCensusInfoSerializer
+
+    def list(self, request, *args, **kwargs):
+        census = PassengerCensus.objects.filter(route_number__in=[
+          "100",
+          "190",
+          "203",
+          "200",
+          "290"
+        ])
+        weekly = getTotals(census)
+        return Response(weekly)
+
+class PassengerCensusAnnualTrainsAvgViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
+    """
+    This viewset will provide a info about Annual System Wide Averages for the Max and WES Commuter Lines
+    """
+    serializer_class = PassengerCensusInfoSerializer
+
+    def list(self, request, *args, **kwargs):
+        print(routes_by_type)
+        census = PassengerCensus.objects.filter(route_number__in=[
+          "100",
+          "190",
+          "203",
+          "200",
+          "290"
+        ])
+        weekly = getAvgs(census)
+        return Response(weekly)
+
+class PassengerCensusAnnualStreetCarTotalViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
+    """
+    This viewset will provide a info about Annual System Wide Totals for the Portland Street Car
+    """
+    serializer_class = PassengerCensusInfoSerializer
+
+    def list(self, request, *args, **kwargs):
+        census = PassengerCensus.objects.filter(route_number__in=[
+          "193",
+          "194",
+          "195"
+        ])
+        weekly = getTotals(census)
+        return Response(weekly)
+
+class PassengerCensusAnnualStreetCarAvgViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
+    """
+    This viewset will provide a info about Annual System Wide Averages for the Portland Street Car
+    """
+    serializer_class = PassengerCensusInfoSerializer
+
+    def list(self, request, *args, **kwargs):
+        print(routes_by_type)
+        census = PassengerCensus.objects.filter(route_number__in=[
+          "193",
+          "194",
+          "195"
+        ])
+        weekly = getAvgs(census)
+        return Response(weekly)
+
+class PassengerCensusAnnualTramTotalViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
+    """
+    This viewset will provide a info about Annual System Wide Totals for the Portland Aerial Tram
+    """
+    serializer_class = PassengerCensusInfoSerializer
+
+    def list(self, request, *args, **kwargs):
+        census = PassengerCensus.objects.filter(route_number__in=[
+          "208"
+        ])
+        weekly = getTotals(census)
+        return Response(weekly)
+
+class PassengerCensusAnnualTramAvgViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
+    """
+    This viewset will provide a info about Annual System Wide Averages for the Portland Aerial Tram
+    """
+    serializer_class = PassengerCensusInfoSerializer
+
+    def list(self, request, *args, **kwargs):
+        print(routes_by_type)
+        census = PassengerCensus.objects.filter(route_number__in=[
+          "208"
+        ])
+        weekly = getAvgs(census)
+        return Response(weekly)
+
 class PassengerCensusAnnualSystemTotalViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
     """
     This viewset will provide a info about Annual System Wide Totals.
@@ -130,7 +254,7 @@ class PassengerCensusAnnualSystemTotalViewSet(viewsets.ViewSetMixin, generics.Li
 
 class PassengerCensusAnnualSystemAvgViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
     """
-    This viewset will provide a info about Annual System Wide Totals.
+    This viewset will provide a info about Annual System Wide Averages.
     """
     serializer_class = PassengerCensusInfoSerializer
 
@@ -233,16 +357,17 @@ class PassengerCensusRoutesAnnualTotalViewSet(viewsets.ViewSetMixin, generics.Li
         else:
             return Response('Missing Route Number paramater', status=status.HTTP_400_BAD_REQUEST)
 
-    # filter_fields = ['route_number',]
-
-class PassengerCensusAnnualRollupViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = AnnualRouteRidership.objects.all()
-    serializer_class = AnnualRouteRidershipSerializer
-
 class OrCensusBlockPolygonsViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    This viewset will return GeoJson for Census Blocks in Portland Metro Area within Oregon
+    """
     queryset = OrCensusBlockPolygons.objects.all()
     serializer_class = OrCensusBlockPolygonsSerializer
 
 class WaCensusBlockPolygonsViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = WaCensusBlockPolygons.objects.all()
-    serializer_class = WaCensusBlockPolygonsSerializer
+        """
+        This viewset will return GeoJson for Census Blocks in Portland Metro Area within Washington
+        """
+
+        queryset = WaCensusBlockPolygons.objects.all()
+        serializer_class = WaCensusBlockPolygonsSerializer
