@@ -29,19 +29,20 @@ def sandbox_view_factory(model_class, serializer_class, multi_geom_class, geom_f
             coords = []
             for each in dataset: 
                 geom = getattr(each, geom_field)
+                if geom is not None:
                 ## converts MultiPolygons to Polygons ##
-                if isinstance(geom, MultiPolygon):
-                    coords.append(geom.convex_hull)
-                else: 
-                    coords.append(geom)
-            
+                  if isinstance(geom, MultiPolygon):
+                      coords.append(geom.convex_hull)
+                  else: 
+                      coords.append(geom)
+              
             multi = multi_geom_class(coords)
             limit_boundary = multi.convex_hull.json
 
             if settings.DEBUG: print('boundary calculation complete')
             
         except model_class.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            return Response(status.HTTP_404_NOT_FOUND)
 
         serializer = serializer_class(dataset, many=True)
 
