@@ -1,5 +1,5 @@
 from django.test import TestCase
-from trimet_stop_event_api.models import TrimetStopEvents, TotalsOnsByHour
+from trimet_stop_event_api.models import TrimetStopEvents, TotalsOnsByHour, DisturbanceStops
 from rest_framework.test import APIClient, RequestsClient
 
 class TrimetStopEventsTest(TestCase):
@@ -20,4 +20,11 @@ class TrimetStopEventsTotalsListEndpointsTestCase(TestCase):
         self.client = APIClient()
     def test_list_200_response(self):
         response = self.client.get('/transportation-systems/trimet-stop-events/totals/')
+        assert response.status_code == 200
+
+class DisturbanceStopsListEndpointsTestCase(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+    def test_list_200_response(self):
+        response = self.client.get('/transportation-systems/trimet-stop-events/disturbance-stops/')
         assert response.status_code == 200
