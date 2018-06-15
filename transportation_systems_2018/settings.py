@@ -51,7 +51,7 @@ INSTALLED_APPS = [
     'trimet_stop_event_api',
     'odot_crash_api',
     'multco_permits_api',
-    'origin_destination_api', 
+    'origin_destination_api',
     'civic_sandbox',
     ]
 
