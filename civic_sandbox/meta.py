@@ -19,7 +19,7 @@ safety_hotline_meta = {
     },
   }
 
-#TODO: 4 digit years 
+
 crash_meta = {
   'attributes': {
     'primary': {
@@ -34,8 +34,8 @@ crash_meta = {
     'dates': {
     'date_attribute': 'crash_dt',
     'date_granularity': 'year',
-    'default_date_filter': '14',
-    'min_date': '04', 
-    'max_date': '14'
+    'default_date_filter': '2014',
+    'min_date': '2004', 
+    'max_date': '2014'
     },
   }
