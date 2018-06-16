@@ -10,6 +10,7 @@ from trimet_stop_event_api import views
 router = DefaultRouter()
 router.register(r'trimet-stop-events', views.TrimetStopEventsViewSet)
 router.register(r'totals', views.TrimetStopEventsViewSet)
+router.register(r'disturbance-stops', views.DisturbanceStopsViewSet)
 
 
 # schema_view = get_swagger_view(title='Hack Oregon 2018 Transportation Systems APIs')
