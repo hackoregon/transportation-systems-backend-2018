@@ -6,7 +6,7 @@ options.DEFAULT_NAMES = options.DEFAULT_NAMES + ('in_db',)
 class SafetyHotlineTickets(models.Model):
     id = models.IntegerField(primary_key=True)
     date_created = models.DateField()
-    # description = models.TextField(blank=True, null=True) #TODO: will add description to endpoint once identifying info is removed from field. 
+    # description = models.TextField(blank=True, null=True) #TODO: will add description to endpoint once identifying info is removed from field.
     geom_4326 = models.PointField()
 
     class Meta:
@@ -16,7 +16,7 @@ class SafetyHotlineTickets(models.Model):
 
 class Crash(models.Model):
     crash_id = models.IntegerField(primary_key=True)
-    crash_dt = models.DateTimeField()
+    crash_dt = models.DateField()
     geom_point = models.PointField(null=True)
 
 

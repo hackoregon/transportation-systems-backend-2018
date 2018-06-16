@@ -13,8 +13,16 @@ from rest_framework import viewsets
 from rest_framework.filters import SearchFilter, OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend, FilterSet
 
-from trimet_stop_event_api.models import TrimetStopEvents, TotalsOnsByHour
-from trimet_stop_event_api.serializers import TrimetStopEventsSerializer, TotalsOnsByHourSerializer
+from trimet_stop_event_api.models import TrimetStopEvents, TotalsOnsByHour, DisturbanceStops
+from trimet_stop_event_api.serializers import TrimetStopEventsSerializer, TotalsOnsByHourSerializer, DisturbanceStopsSerializer
+
+class DisturbanceStopsViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    This viewset will provide a list of Biketown Trips.
+    """
+
+    queryset = DisturbanceStops.objects.all()
+    serializer_class = DisturbanceStopsSerializer
 
 class TrimetStopEventsViewSet(viewsets.ReadOnlyModelViewSet):
     """
