@@ -16,7 +16,7 @@ class SafetyHotlineTickets(models.Model):
 
 class Crash(models.Model):
     crash_id = models.IntegerField(primary_key=True)
-    crash_dt = models.DateTimeField()
+    crash_dt = models.CharField(max_length=50)
     geom_point = models.PointField(null=True)
 
 
