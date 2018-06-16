@@ -37,10 +37,10 @@ class CensusBlockChange(models.Model):
     census_block = models.CharField(primary_key=True, max_length=255)
     total_ons_2009 = models.BigIntegerField(blank=True, null=True)
     total_ons_2017 = models.BigIntegerField(blank=True, null=True)
-    ons_pct_change = models.DecimalField(max_digits=65535, decimal_places=2, blank=True, null=True)
+    ons_pct_change = models.DecimalField(max_digits=5, decimal_places=1, blank=True, null=True)
     stops_2009 = models.BigIntegerField(blank=True, null=True)
     stops_2017 = models.BigIntegerField(blank=True, null=True)
-    stops_pct_change = models.DecimalField(max_digits=65535, decimal_places=2, blank=True, null=True)
+    stops_pct_change = models.DecimalField(max_digits=5, decimal_places=1, blank=True, null=True)
     geom_polygon_4326 = models.GeometryField(blank=True, null=True)
 
     class Meta:
