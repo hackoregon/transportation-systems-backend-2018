@@ -15,12 +15,12 @@ class TrimetStopEventsListEndpointsTestCase(TestCase):
         response = self.client.get('/transportation-systems/trimet-stop-events/trimet-stop-events/')
         assert response.status_code == 200
 
-class TrimetStopEventsTotalsListEndpointsTestCase(TestCase):
-    def setUp(self):
-        self.client = APIClient()
-    def test_list_200_response(self):
-        response = self.client.get('/transportation-systems/trimet-stop-events/totals/')
-        assert response.status_code == 200
+# class TrimetStopEventsTotalsListEndpointsTestCase(TestCase):
+#     def setUp(self):
+#         self.client = APIClient()
+#     def test_list_200_response(self):
+#         response = self.client.get('/transportation-systems/trimet-stop-events/totals/')
+#         assert response.status_code == 200
 
 class DisturbanceStopsListEndpointsTestCase(TestCase):
     def setUp(self):

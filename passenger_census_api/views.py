@@ -22,7 +22,7 @@ from passenger_census_api.queries import getAvgs, getCensusTotals, getTotals, ro
 from .routes import routes
 from .national import national
 
-from passenger_census_api.models import PassengerCensus, AnnualRouteRidership, OrCensusBlockPolygons, WaCensusBlockPolygons, AnnualCensusBlockRidership, CensusBlockChange
+from passenger_census_api.models import PassengerCensus, AnnualRouteRidership, OrCensusBlockPolygons, WaCensusBlockPolygons, AnnualCensusBlockRidership, CensusBlockChange, AnnualRouteRidership
 from passenger_census_api.serializers import PassengerCensusSerializer, PassengerCensusAnnualSerializer, PassengerCensusInfoSerializer, AnnualRouteRidershipSerializer, OrCensusBlockPolygonsSerializer, WaCensusBlockPolygonsSerializer, AnnualCensusBlockRidershipSerializer, CensusBlockChangeSerializer
 
 
@@ -31,33 +31,15 @@ class LargeResultsSetPagination(PageNumberPagination):
     page_size_query_param = 'page_size'
     max_page_size = 4000
 
+class AnnualRouteRidershipViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
+    """
+    This viewset will provide a list of individual Passenger Census counts by TRIMET.
+    """
 
-# class AnnualCensusBlockRidershipFilter(django_filters.FilterSet):
-#     year = django_filters.DateFilter('year', lookup_expr=['exact','gte','contains','lte','lt','gt'])
-#     census_block = django_filters.CharFilter('census_block', lookup_expr=['exact','icontains'])
-#     class Meta:
-#         model = AnnualCensusBlockRidership
-#         # fields = ['year','year__gte','year__contains','year__lte','year__lt','year__gt','census_block', 'census_block_icontains']
-#         fields = ['year', 'census_block']
-#
-#     def get_schema_fields(self, view):
-#         fields = []
-#         year = coreapi.Field(
-#             name="year",
-#             location="query",
-#             description="YYYY",
-#             type="number",
-#             )
-#         census_block = coreapi.Field(
-#             name="census_block",
-#             location="query",
-#             description="census block id",
-#             type="string",
-#             )
-#         fields.append(year)
-#         fields.append(census_block)
-#
-#         return fields
+    queryset = AnnualRouteRidership.objects.all()
+    filter_backends = (SearchFilter, OrderingFilter, DjangoFilterBackend)
+    filter_fields = '__all__'
+    serializer_class = AnnualRouteRidershipSerializer
 
 class AnnualCensusBlockRidershipViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
     """
@@ -65,7 +47,7 @@ class AnnualCensusBlockRidershipViewSet(viewsets.ViewSetMixin, generics.ListAPIV
     """
 
     queryset = AnnualCensusBlockRidership.objects.all()
-    # filter_backends = (SearchFilter, AnnualCensusBlockRidershipFilter, OrderingFilter)
+    filter_backends = (SearchFilter, OrderingFilter)
     serializer_class = AnnualCensusBlockRidershipSerializer
 
 class CensusBlockChangeViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
@@ -74,11 +56,11 @@ class CensusBlockChangeViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
     """
 
     queryset = CensusBlockChange.objects.all()
-    # filter_backends = (SearchFilter, AnnualCensusBlockRidershipFilter, OrderingFilter)
+    filter_backends = (SearchFilter, OrderingFilter)
     serializer_class = CensusBlockChangeSerializer
 
 class PassengerCensusListFilter(DjangoFilterBackend):
-    begin_date = django_filters.DateFilter('summary_begin_date', lookup_expr=['exact',])
+    begin_date = django_filters.DateFilter('summary_begin_date', lookup_expr=['exact'])
     class Meta:
         model = PassengerCensus
         fields = ['begin_date']

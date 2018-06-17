@@ -23,6 +23,8 @@ class CurrentPermitsViewSet(viewsets.ReadOnlyModelViewSet):
 
     queryset = CurrentPermits.objects.all()
     serializer_class = CurrentPermitsSerializer
+    filter_backends = (SearchFilter, OrderingFilter)
+    filter_fields = '__all__'
 
 class ArchivedPermitsViewSet(viewsets.ReadOnlyModelViewSet):
     """
@@ -31,3 +33,4 @@ class ArchivedPermitsViewSet(viewsets.ReadOnlyModelViewSet):
 
     queryset = ArchivedPermits.objects.all()
     serializer_class = ArchivedPermitsSerializer
+    filter_backends = (SearchFilter, OrderingFilter)
