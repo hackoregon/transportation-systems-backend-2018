@@ -18,7 +18,7 @@ from trimet_stop_event_api.serializers import TrimetStopEventsSerializer, Totals
 
 class DisturbanceStopsViewSet(viewsets.ReadOnlyModelViewSet):
     """
-    This viewset will provide a list of Biketown Trips.
+    This viewset will provide a list of stops of Trimet lines that were not at a scheduled stop.
     """
 
     queryset = DisturbanceStops.objects.all()
@@ -26,7 +26,7 @@ class DisturbanceStopsViewSet(viewsets.ReadOnlyModelViewSet):
 
 class TrimetStopEventsViewSet(viewsets.ReadOnlyModelViewSet):
     """
-    This viewset will provide a list of Biketown Trips.
+    This viewset will provide a viewset of stops of Triment lines.
     """
 
     queryset = TrimetStopEvents.objects.all()
