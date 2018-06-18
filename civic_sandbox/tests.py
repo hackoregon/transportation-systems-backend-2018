@@ -20,3 +20,10 @@ class CivicSandboxCrashesEndpointTestCase(TestCase):
     def test_list_200_response(self):
         response = self.client.get('/transportation-systems/sandbox/slides/crashes/')
         assert response.status_code == 200
+
+# class CivicSandboxCrashesDateFilterEndpointTestCase(TestCase):
+#     def setUp(self):
+#         self.client = APIClient()
+#     def test_list_200_response(self):
+#         response = self.client.get('/transportation-systems/sandbox/slides/crashes/(P2006-10-13\d+)')
+#         assert response.status_code == 200
