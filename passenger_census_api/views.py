@@ -22,8 +22,8 @@ from passenger_census_api.queries import getAvgs, getCensusTotals, getTotals, ro
 from .routes import routes
 from .national import national
 
-from passenger_census_api.models import PassengerCensus, AnnualRouteRidership, OrCensusBlockPolygons, WaCensusBlockPolygons, AnnualCensusBlockRidership, CensusBlockChange, AnnualRouteRidership
-from passenger_census_api.serializers import PassengerCensusSerializer, PassengerCensusAnnualSerializer, PassengerCensusInfoSerializer, AnnualRouteRidershipSerializer, OrCensusBlockPolygonsSerializer, WaCensusBlockPolygonsSerializer, AnnualCensusBlockRidershipSerializer, CensusBlockChangeSerializer
+from passenger_census_api.models import PassengerCensus, AnnualRouteRidership, OrCensusBlockPolygons, WaCensusBlockPolygons, AnnualCensusBlockRidership, CensusBlockChange, AnnualRouteRidership, RouteChange
+from passenger_census_api.serializers import PassengerCensusSerializer, PassengerCensusAnnualSerializer, PassengerCensusInfoSerializer, AnnualRouteRidershipSerializer, OrCensusBlockPolygonsSerializer, WaCensusBlockPolygonsSerializer, AnnualCensusBlockRidershipSerializer, CensusBlockChangeSerializer, RouteChangeSerializer
 
 
 class LargeResultsSetPagination(PageNumberPagination):
@@ -58,6 +58,15 @@ class CensusBlockChangeViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
     queryset = CensusBlockChange.objects.all()
     filter_backends = (SearchFilter, OrderingFilter)
     serializer_class = CensusBlockChangeSerializer
+
+class RouteChangeViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
+    """
+    This viewset will provide a list of individual Passenger Census counts by TRIMET.
+    """
+
+    queryset = RouteChange.objects.all()
+    filter_backends = (SearchFilter, OrderingFilter)
+    serializer_class = RouteChangeSerializer
 
 class PassengerCensusListFilter(DjangoFilterBackend):
     begin_date = django_filters.DateFilter('summary_begin_date', lookup_expr=['exact'])

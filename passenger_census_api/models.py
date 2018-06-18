@@ -48,6 +48,21 @@ class CensusBlockChange(models.Model):
         db_table = 'census_block_change'
         in_db = 'passenger_census'
 
+class RouteChange(models.Model):
+    route_id = models.TextField()
+    direction_id = models.IntegerField()
+    shape_id = models.TextField(primary_key=True)
+    y2009_trip_count = models.IntegerField(blank=True, null=True)
+    y2017_trip_count = models.IntegerField(blank=True, null=True)
+    geom_linestring = models.LineStringField(blank=True, null=True)
+    pct_change = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'route_change'
+        unique_together = (('route_id', 'direction_id', 'shape_id'),)
+        in_db = 'passenger_census'
+
 
 class OrCensusBlockPolygons(models.Model):
     census_block = models.CharField(primary_key=True, max_length=255)

@@ -26,7 +26,7 @@ router.register(r'census-block/washington/polygons', views.WaCensusBlockPolygons
 router.register(r'routes/annual/totals', views.AnnualRouteRidershipViewSet, base_name='passenger-census')
 router.register(r'census-block/totals', views.AnnualCensusBlockRidershipViewSet, base_name='passenger-census')
 router.register(r'census-block/change', views.CensusBlockChangeViewSet, base_name='passenger-census')
-
+router.register(r'routes/change', views.RouteChangeViewSet, base_name='passenger-census')
 router.register(r'census/info', views.PassengerCensusInfoViewSet, base_name='passenger-census')
 
 router.register(r'system/annual/average', views.PassengerCensusAnnualSystemAvgViewSet, base_name='passenger-census')

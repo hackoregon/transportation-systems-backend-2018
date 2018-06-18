@@ -84,7 +84,6 @@ class ArchivedPermits(models.Model):
     st_eqp_pilot_two_lane = models.TextField(blank=True, null=True)
     st_eqp_pilot_four_lane = models.TextField(blank=True, null=True)
     permit_count = models.TextField(blank=True, null=True)
-    preparer = models.TextField(blank=True, null=True)
     pkey = models.AutoField(primary_key=True)
 
     class Meta:
