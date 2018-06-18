@@ -7,5 +7,7 @@ urlpatterns = [
     url(r'^slides/safetyhotline/', views.safetyhotline),
     url(r'^slides/crashes/(?P<date_filter>\d+)', views.crash),
     url(r'^slides/crashes/', views.crash),
+    url(r'^slides/routechange/', views.routechange),
+    url(r'^foundations/blockchange/', views.blockchange),
 ]
 urlpatterns = format_suffix_patterns(urlpatterns)
