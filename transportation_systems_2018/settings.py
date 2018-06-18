@@ -202,7 +202,7 @@ if DEBUG == False:
             'NAME': os.environ.get('POSTGRES_NAME'),
             'OPTIONS': {
                     'options': '-c search_path=django,odot_crash_data',
-                    'MAX_CONNS': 20
+                    'MAX_CONNS': 4
                 },
             'USER': os.environ.get('POSTGRES_USER'),
             'HOST': os.environ.get('POSTGRES_HOST'),
@@ -215,7 +215,7 @@ if DEBUG == False:
             'NAME': os.environ.get('POSTGRES_NAME'),
             'OPTIONS': {
                     'options': '-c search_path=django,multnomah_county_permits',
-                    'MAX_CONNS': 20
+                    'MAX_CONNS': 4
                 },
             'USER': os.environ.get('POSTGRES_USER'),
             'HOST': os.environ.get('POSTGRES_HOST'),
@@ -227,7 +227,7 @@ if DEBUG == False:
             'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
             'OPTIONS': {
                     'options': '-c search_path=django,passenger_census',
-                    'MAX_CONNS': 20
+                    'MAX_CONNS': 4
                 },
             'NAME': os.environ.get('POSTGRES_NAME'),
             'USER': os.environ.get('POSTGRES_USER'),
@@ -240,7 +240,7 @@ if DEBUG == False:
             'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
             'OPTIONS': {
                     'options': '-c search_path=django,trimet_stop_events',
-                    'MAX_CONNS': 20
+                    'MAX_CONNS': 4
                 },
             'NAME': os.environ.get('POSTGRES_NAME'),
             'USER': os.environ.get('POSTGRES_USER'),
@@ -253,7 +253,7 @@ if DEBUG == False:
             'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
             'OPTIONS': {
                     'options': '-c search_path=django,safety_hotline_tickets',
-                    'MAX_CONNS': 20
+                    'MAX_CONNS': 4
                 },
             'NAME': os.environ.get('POSTGRES_NAME'),
             'USER': os.environ.get('POSTGRES_USER'),
@@ -266,7 +266,7 @@ if DEBUG == False:
             'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
             'OPTIONS': {
                     'options': '-c search_path=django,biketown',
-                    'MAX_CONNS': 20
+                    'MAX_CONNS': 4
                 },
             'NAME': os.environ.get('POSTGRES_NAME'),
             'USER': os.environ.get('POSTGRES_USER'),
@@ -279,7 +279,7 @@ if DEBUG == False:
             'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
             'OPTIONS': {
                     'options': '-c search_path=django,origin_destination',
-                    'MAX_CONNS': 20
+                    'MAX_CONNS': 4
                 },
             'NAME': os.environ.get('POSTGRES_NAME'),
             'USER': os.environ.get('POSTGRES_USER'),

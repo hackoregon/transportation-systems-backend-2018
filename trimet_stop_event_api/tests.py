@@ -1,5 +1,5 @@
 from django.test import TestCase
-from trimet_stop_event_api.models import TrimetStopEvents, TotalsOnsByHour, DisturbanceStops
+from trimet_stop_event_api.models import TrimetStopEvents, TotalOnsByHour, DisturbanceStops
 from rest_framework.test import APIClient, RequestsClient
 
 class TrimetStopEventsTest(TestCase):
