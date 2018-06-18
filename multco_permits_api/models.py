@@ -116,7 +116,7 @@ class CurrentPermits(models.Model):
     lat_lng = models.TextField(blank=True, null=True)
     longitude = models.FloatField(blank=True, null=True)
     latitude = models.FloatField(blank=True, null=True)
-    geom_point = models.GeometryField(blank=True, null=True)
+    geom_point = models.GeometryField(blank=True, null=True, srid=4326)
 
     class Meta:
         managed = False
