@@ -10,12 +10,22 @@ from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework import renderers
 from rest_framework import viewsets
+from rest_framework_gis.filterset import GeoFilterSet
+from rest_framework_gis.filters import GeometryFilter
+from django_filters import filters
 from rest_framework.filters import SearchFilter, OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend, FilterSet
+from rest_framework_gis.filters import DistanceToPointFilter
 
 from multco_permits_api.models import CurrentPermits, ArchivedPermits
 from multco_permits_api.serializers import CurrentPermitsSerializer, ArchivedPermitsSerializer
 
+#
+# class PermitGeoFilter(DistanceToPointFilter):
+#     contains_geom = GeometryFilter(name='geom', lookup_expr='intersects')
+#
+#     class Meta:
+#         model = CurrentPermits
 
 class CurrentPermitsViewSet(viewsets.ReadOnlyModelViewSet):
     """
@@ -24,9 +34,12 @@ class CurrentPermitsViewSet(viewsets.ReadOnlyModelViewSet):
 
     queryset = CurrentPermits.objects.all()
     serializer_class = CurrentPermitsSerializer
-    filter_backends = (SearchFilter, OrderingFilter)
+    filter_backends = (SearchFilter, OrderingFilter, DistanceToPointFilter)
     search_fields = ('city', 'city_state', 'comments', 'cross_street', 'direction', 'district', 'effect_date', 'entry_date', 'expiration_date', 'final_date', 'issue_date', 'location', 'permit_category', 'permit_id', 'state', 'street', 'street_number', 'street_type', 'type', 'zip_code')
     ordering_fields = ('city', 'city_state', 'comments', 'cross_street', 'direction', 'district', 'effect_date', 'entry_date', 'expiration_date', 'final_date', 'issue_date', 'location', 'permit_category', 'permit_id', 'state', 'street', 'street_number', 'street_type', 'type', 'zip_code')
+    distance_filter_field = 'geom_point'
+    bbox_filter_include_overlapping = True # Optional
+    distance_filter_convert_meters = True
 
 
 class ArchivedPermitsViewSet(viewsets.ReadOnlyModelViewSet):
