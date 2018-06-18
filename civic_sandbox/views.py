@@ -1,12 +1,12 @@
 
 from rest_framework.decorators import api_view
 
-from .models import SafetyHotlineTickets, Crash
+from .models import SafetyHotlineTickets, Crash, RouteChange, BlockChange
 
-from .serializers import SafetyHotlineSerializer, CrashSerializer
+from .serializers import SafetyHotlineSerializer, CrashSerializer, BlockChangeSerializer, RouteChangeSerializer
 from django.contrib.gis.geos import GEOSGeometry, MultiPoint, MultiPolygon, MultiLineString
 from .helpers import sandbox_view_factory 
-from .meta import safety_hotline_meta, crash_meta
+from .meta import safety_hotline_meta, crash_meta, route_change_meta, block_change_meta
 
 
 
@@ -26,4 +26,24 @@ crash = sandbox_view_factory(
   geom_field='geom_point',
   attributes =crash_meta['attributes'],
   dates=crash_meta['dates'],
+  )
+
+
+routechange = sandbox_view_factory(
+  model_class=RouteChange,
+  serializer_class=RouteChangeSerializer,
+  multi_geom_class=MultiLineString,
+  geom_field='geom_linestring',
+  attributes =route_change_meta['attributes'],
+  dates=route_change_meta['dates'],
+  )
+
+
+blockchange = sandbox_view_factory(
+  model_class=BlockChange,
+  serializer_class=BlockChangeSerializer,
+  multi_geom_class=MultiPolygon,
+  geom_field='geom_polygon_4326',
+  attributes =block_change_meta['attributes'],
+  dates=block_change_meta['dates'],
   )
