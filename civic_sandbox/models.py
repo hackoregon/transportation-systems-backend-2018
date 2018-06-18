@@ -24,3 +24,25 @@ class Crash(models.Model):
         managed = False
         db_table = 'crash'
         in_db = 'odot_crash_data'
+
+class BlockChange(models.Model):
+    census_block = models.CharField(max_length=50, primary_key=True)
+    stops_pct_change = models.FloatField(max_length=50)
+    geom_polygon_4326 = models.GeometryField(null=True)
+
+
+    class Meta:
+        managed = False
+        db_table = 'census_block_change'
+        in_db = 'passenger_census'
+
+class RouteChange(models.Model):
+    shape_id = models.CharField(max_length=50, primary_key=True)
+    pct_change = models.FloatField(max_length=50)
+    geom_linestring = models.LineStringField(null=True)
+
+
+    class Meta:
+        managed = False
+        db_table = 'route_change'
+        in_db = 'passenger_census'
