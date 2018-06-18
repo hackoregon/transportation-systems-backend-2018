@@ -117,7 +117,7 @@ DATABASES = {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
         'OPTIONS': {
-                'options': '-c search_path=django,multnomah_county_permits'
+                'options': '-c search_path=django,public,multnomah_county_permits'
             },
         'NAME': os.environ.get('POSTGRES_NAME'),
         'USER': os.environ.get('POSTGRES_USER'),
