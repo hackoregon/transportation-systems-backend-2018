@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'^transportation-systems/trimet-stop-events/', include('trimet_stop_event_api.urls')),
     url(r'^transportation-systems/multnomah-county-permits/', include('multco_permits_api.urls')),
     url(r'^transportation-systems/origin-destination/', include('origin_destination_api.urls')),
+    url(r'^transportation-systems/PUDL/', include('pudl_sensors_api.urls')),
     url('transportation-systems/sandbox/', include('civic_sandbox.urls')),
 
 ]
