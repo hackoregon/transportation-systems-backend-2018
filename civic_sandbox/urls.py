@@ -9,5 +9,6 @@ urlpatterns = [
     url(r'^slides/crashes/', views.crash),
     url(r'^slides/routechange/', views.routechange),
     url(r'^foundations/blockchange/', views.blockchange),
+    url(r'^slides/sensors/', views.sensors),
 ]
 urlpatterns = format_suffix_patterns(urlpatterns)

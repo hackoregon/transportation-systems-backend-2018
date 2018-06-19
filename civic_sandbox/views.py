@@ -1,12 +1,12 @@
 
 from rest_framework.decorators import api_view
 
-from .models import SafetyHotlineTickets, Crash, RouteChange, BlockChange
+from .models import SafetyHotlineTickets, Crash, RouteChange, BlockChange, Sensor
 
-from .serializers import SafetyHotlineSerializer, CrashSerializer, BlockChangeSerializer, RouteChangeSerializer
+from .serializers import SafetyHotlineSerializer, CrashSerializer, BlockChangeSerializer, RouteChangeSerializer, SensorSerializer
 from django.contrib.gis.geos import GEOSGeometry, MultiPoint, MultiPolygon, MultiLineString
 from .helpers import sandbox_view_factory 
-from .meta import safety_hotline_meta, crash_meta, route_change_meta, block_change_meta
+from .meta import safety_hotline_meta, crash_meta, route_change_meta, block_change_meta, sensors_meta
 
 
 
@@ -46,4 +46,13 @@ blockchange = sandbox_view_factory(
   geom_field='geom_polygon_4326',
   attributes =block_change_meta['attributes'],
   dates=block_change_meta['dates'],
+  )
+
+sensors = sandbox_view_factory(
+  model_class=Sensor,
+  serializer_class=SensorSerializer,
+  multi_geom_class=MultiPoint,
+  geom_field='geom_4326',
+  attributes =sensors_meta['attributes'],
+  dates=sensors_meta['dates'],
   )

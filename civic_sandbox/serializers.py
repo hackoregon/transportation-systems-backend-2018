@@ -25,3 +25,9 @@ class RouteChangeSerializer(GeoFeatureModelSerializer):
         model = models.RouteChange
         fields = '__all__'
         geo_field = 'geom_linestring'
+
+class SensorSerializer(GeoFeatureModelSerializer):
+    class Meta:
+        model = models.Sensor
+        fields = '__all__'
+        geo_field = 'geom_4326'

@@ -46,3 +46,13 @@ class RouteChange(models.Model):
         managed = False
         db_table = 'route_change'
         in_db = 'passenger_census'
+
+class Sensor(models.Model):
+    id = models.IntegerField(primary_key=True)
+    geom_4326 = models.PointField()
+
+
+    class Meta:
+        managed = False
+        db_table = 'sensor_locations'
+        in_db = 'pudl'
