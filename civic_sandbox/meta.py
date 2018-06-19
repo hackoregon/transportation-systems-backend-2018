@@ -79,3 +79,23 @@ route_change_meta = {
     'max_date': None
     },
   }
+
+sensors_meta = {
+  'attributes': {
+    'primary': {
+      'field': None,
+      'name': None,
+    },
+    'secondary': {
+      'field': None,
+      'name': None,
+    },
+  },
+    'dates': {
+    'date_attribute': None,
+    'date_granularity': None,
+    'default_date_filter': '2018',
+    'min_date': None, 
+    'max_date': None
+    },
+  }
