@@ -66,31 +66,6 @@ class CurrentPermitsViewSet(viewsets.ReadOnlyModelViewSet):
     bbox_filter_include_overlapping = True # Optional
     distance_filter_convert_meters = True
 
-    def get_schema_fields(self, view):
-        fields = []
-        dist = coreapi.Field(
-            name="dist",
-            location="query",
-            description="Distance in Meters",
-            type="number",
-            required="true"
-            )
-        point = coreapi.Field(
-            name="point",
-            location="query",
-            description="Example: -122.276,45.5162",
-            type="string",
-            required="true"
-            )
-        fields.append(dist)
-        fields.append(point)
-
-        return fields
-
-
-
-
-
 class ArchivedPermitsViewSet(viewsets.ReadOnlyModelViewSet):
     """
     This viewset will provide a list of Historical Multnomah County Work Permits
