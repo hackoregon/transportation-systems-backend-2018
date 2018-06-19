@@ -23,8 +23,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = bool(os.environ.get('DEBUG', False))
-DEBUG = True
+DEBUG = bool(os.environ.get('DEBUG', False))
+
 
 ALLOWED_HOSTS = ['*']
 
@@ -214,7 +214,7 @@ if DEBUG == False:
             'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
             'NAME': os.environ.get('POSTGRES_NAME'),
             'OPTIONS': {
-                    'options': '-c search_path=django,multnomah_county_permits',
+                    'options': '-c search_path=django,public,multnomah_county_permits',
                     'MAX_CONNS': 4
                 },
             'USER': os.environ.get('POSTGRES_USER'),
