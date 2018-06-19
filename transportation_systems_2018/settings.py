@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'multco_permits_api',
     'origin_destination_api',
     'civic_sandbox',
+    'pudl_sensors_api'
     ]
 
 MIDDLEWARE = [
@@ -179,6 +180,17 @@ DATABASES = {
         'HOST': os.environ.get('POSTGRES_HOST'),
         'PORT': os.environ.get('POSTGRES_PORT')
     },
+    'pudl': {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'OPTIONS': {
+                'options': '-c search_path=django,pudl'
+            },
+        'NAME': os.environ.get('POSTGRES_NAME'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'HOST': os.environ.get('POSTGRES_HOST'),
+        'PORT': os.environ.get('POSTGRES_PORT')
+    },
 }
 
 if DEBUG == False:
@@ -266,6 +278,19 @@ if DEBUG == False:
             'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
             'OPTIONS': {
                     'options': '-c search_path=django,biketown',
+                    'MAX_CONNS': 4
+                },
+            'NAME': os.environ.get('POSTGRES_NAME'),
+            'USER': os.environ.get('POSTGRES_USER'),
+            'HOST': os.environ.get('POSTGRES_HOST'),
+            'PORT': os.environ.get('POSTGRES_PORT'),
+            'CONN_MAX_AGE': 0,
+        },
+        'pudl': {
+            'ENGINE': 'django_db_geventpool.backends.postgis',
+            'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+            'OPTIONS': {
+                    'options': '-c search_path=django,pudl',
                     'MAX_CONNS': 4
                 },
             'NAME': os.environ.get('POSTGRES_NAME'),
