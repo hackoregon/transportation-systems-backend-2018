@@ -21,7 +21,7 @@ import operator
 from passenger_census_api.queries import getAvgs, getCensusTotals, getTotals, routeDetailLookup, nationalDetailLookup
 from .routes import routes
 from .national import national
-
+from .service_availability import availability
 from passenger_census_api.models import PassengerCensus, AnnualRouteRidership, OrCensusBlockPolygons, WaCensusBlockPolygons, AnnualCensusBlockRidership, CensusBlockChange, AnnualRouteRidership, RouteChange
 from passenger_census_api.serializers import PassengerCensusSerializer, PassengerCensusAnnualSerializer, PassengerCensusInfoSerializer, AnnualRouteRidershipSerializer, OrCensusBlockPolygonsSerializer, WaCensusBlockPolygonsSerializer, AnnualCensusBlockRidershipSerializer, CensusBlockChangeSerializer, RouteChangeSerializer
 
@@ -82,6 +82,33 @@ class PassengerCensusViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
     queryset = PassengerCensus.objects.all()
     filter_backends = (PassengerCensusListFilter,)
     serializer_class = PassengerCensusSerializer
+
+class ServiceAvailabilityViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
+    """
+    This viewset will provide a list of total trip counts per year for Trimet.
+    """
+    def get_queryset(self):
+        pass
+
+    def list(self, request, *args, **kwargs):
+        dictdump = json.loads(availability)
+        return Response(dictdump)
+
+class ServiceAvailabilityDetail(APIView):
+    """
+    This viewset will retrieve a total trip count for a given year for Trimet.
+    """
+    def get_object(self, pk):
+        availability = availabilityDetailLookup(pk)
+        return availability
+
+    def get(self, request, pk, format=None):
+        try:
+            print(pk)
+            availability = self.get_object(pk)
+            return Response(availability)
+        except:
+            return Response('Year Not Found', status=status.HTTP_404_NOT_FOUND)
 
 class NationalTotalsViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
     """
@@ -402,9 +429,9 @@ class OrCensusBlockPolygonsViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = OrCensusBlockPolygonsSerializer
 
 class WaCensusBlockPolygonsViewSet(viewsets.ReadOnlyModelViewSet):
-        """
-        This viewset will return GeoJson for Census Blocks in Portland Metro Area within Washington
-        """
+    """
+    This viewset will return GeoJson for Census Blocks in Portland Metro Area within Washington
+    """
 
-        queryset = WaCensusBlockPolygons.objects.all()
-        serializer_class = WaCensusBlockPolygonsSerializer
+    queryset = WaCensusBlockPolygons.objects.all()
+    serializer_class = WaCensusBlockPolygonsSerializer
