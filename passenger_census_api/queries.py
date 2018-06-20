@@ -4,7 +4,7 @@ from django.db.models.functions import ExtractYear
 import operator, json
 from .routes import routes
 from .national import national
-
+from .service_availability import availability
 
 def getYearlyAvg(stops):
         annuals = stops.values(year=ExtractYear("summary_begin_date")).annotate(

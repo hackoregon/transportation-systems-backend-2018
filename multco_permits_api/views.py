@@ -22,6 +22,8 @@ from multco_permits_api.serializers import CurrentPermitsSerializer, ArchivedPer
 
 import coreapi
 
+
+
 class CurrentPermitsGeoFilter(DjangoFilterBackend):
     """
     This filter is used to inject custom filter fields into schema.
