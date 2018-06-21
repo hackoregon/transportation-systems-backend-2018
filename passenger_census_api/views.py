@@ -22,8 +22,8 @@ from passenger_census_api.queries import getAvgs, getCensusTotals, getTotals, ro
 from .routes import routes
 from .national import national
 from .service_availability import availability
-from passenger_census_api.models import PassengerCensus, AnnualRouteRidership, OrCensusBlockPolygons, WaCensusBlockPolygons, AnnualCensusBlockRidership, CensusBlockChange, AnnualRouteRidership, RouteChange
-from passenger_census_api.serializers import PassengerCensusSerializer, PassengerCensusAnnualSerializer, PassengerCensusInfoSerializer, AnnualRouteRidershipSerializer, OrCensusBlockPolygonsSerializer, WaCensusBlockPolygonsSerializer, AnnualCensusBlockRidershipSerializer, CensusBlockChangeSerializer, RouteChangeSerializer
+from passenger_census_api.models import PassengerCensus, AnnualRouteRidership, OrCensusBlockPolygons, WaCensusBlockPolygons, AnnualCensusBlockRidership, CensusBlockChange, AnnualRouteRidership, RouteChange, AnnualRouteDifferencesForScatter
+from passenger_census_api.serializers import PassengerCensusSerializer, PassengerCensusAnnualSerializer, PassengerCensusInfoSerializer, AnnualRouteRidershipSerializer, OrCensusBlockPolygonsSerializer, WaCensusBlockPolygonsSerializer, AnnualCensusBlockRidershipSerializer, CensusBlockChangeSerializer, RouteChangeSerializer, AnnualRouteDifferencesSerializer
 
 
 class LargeResultsSetPagination(PageNumberPagination):
@@ -40,6 +40,17 @@ class AnnualRouteRidershipViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
     filter_backends = (SearchFilter, OrderingFilter, DjangoFilterBackend)
     filter_fields = '__all__'
     serializer_class = AnnualRouteRidershipSerializer
+
+class AnnualRouteDifferencesViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
+    """
+    This viewset will provide a list of individual Passenger Census counts by TRIMET.
+    """
+
+    queryset = AnnualRouteDifferencesForScatter.objects.all()
+    filter_backends = (SearchFilter, OrderingFilter, DjangoFilterBackend)
+    search_fields = '__all__'
+    filter_fields = '__all__'
+    serializer_class = AnnualRouteDifferencesSerializer
 
 class AnnualCensusBlockRidershipViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
     """
