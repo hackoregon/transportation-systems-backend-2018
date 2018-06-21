@@ -59,18 +59,18 @@ def getYearlyTotal(stops):
         annuals = stops.values(year=ExtractYear("summary_begin_date")).annotate(
             num_of_yearly_census=Count('summary_begin_date', distinct=True)).order_by("year")
         weekly = stops.filter(service_key__icontains="W").values(year=ExtractYear("summary_begin_date")).annotate(
-            weekday_sum_ons=Sum('ons'),
-            weekday_sum_offs=Sum('offs'),
+            weekday_sum_ons=Sum('ons')/Count('summary_begin_date', distinct=True),
+            weekday_sum_offs=Sum('offs')/Count('summary_begin_date', distinct=True),
             weekday_total_stops=Count('ons', distinct=True)
             ).order_by("year")
         saturday = stops.filter(service_key__icontains="S").values(year=ExtractYear("summary_begin_date")).annotate(
-            saturday_sum_ons=Sum('ons'),
-            saturday_sum_offs=Sum('offs'),
+            saturday_sum_ons=Sum('ons')/Count('summary_begin_date', distinct=True),
+            saturday_sum_offs=Sum('offs')/Count('summary_begin_date', distinct=True),
             saturday_total_stops=Count('ons', distinct=True)
             ).order_by("year")
         sunday = stops.filter(service_key__icontains="U").values(year=ExtractYear("summary_begin_date")).annotate(
-            sunday_sum_ons=Sum('ons'),
-            sunday_sum_offs=Sum('offs'),
+            sunday_sum_ons=Sum('ons')/Count('summary_begin_date', distinct=True),
+            sunday_sum_offs=Sum('offs')/Count('summary_begin_date', distinct=True),
             sunday_total_stops=Count('ons', distinct=True)
             ).order_by("year")
         sorting_key = operator.itemgetter("year")

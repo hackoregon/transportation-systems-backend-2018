@@ -18,7 +18,7 @@ from django_filters.rest_framework import DjangoFilterBackend, FilterSet
 from rest_framework.filters import SearchFilter, OrderingFilter
 import coreapi, json
 import operator
-from passenger_census_api.queries import getAvgs, getCensusTotals, getTotals, routeDetailLookup, nationalDetailLookup
+from passenger_census_api.queries import getCensusTotals, getTotals, routeDetailLookup, nationalDetailLookup
 from .routes import routes
 from .national import national
 from .service_availability import availability
@@ -211,19 +211,6 @@ class PassengerCensusAnnualBussesTotalViewSet(viewsets.ViewSetMixin, generics.Li
         weekly = getTotals(census)
         return Response(weekly)
 
-class PassengerCensusAnnualBussesAvgViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
-    """
-    This viewset will provide a info about Annual System Wide Daily
-    Averages for bus routes.
-    """
-    serializer_class = PassengerCensusInfoSerializer
-
-    def list(self, request, *args, **kwargs):
-
-        census = PassengerCensus.objects.filter(route_number__in=["1", "2", "4", "4", "6", "8", "9", "10", "11", "12", "14", "15", "16", "17", "18", "19", "20", "20", "21", "22", "23", "24", "25", "29", "30", "32", "33", "34", "35", "36", "37", "38", "39", "42", "43", "44", "45", "46", "47", "48", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "61", "62", "63", "64", "65", "66", "67", "68", "70", "71", "72", "73", "74", "75", "76", "77", "78", "79", "80", "81", "82", "84", "85", "87", "88", "90", "92", "93", "94", "96", "97", "99", "152", "154", "155", "156", "203", "272", "291"])
-        weekly = getAvgs(census)
-        return Response(weekly)
-
 class PassengerCensusAnnualTrainsTotalViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
     """
     This viewset will provide a info about Annual System Wide Totals for the Max and WES Commuter Lines
@@ -241,24 +228,6 @@ class PassengerCensusAnnualTrainsTotalViewSet(viewsets.ViewSetMixin, generics.Li
         weekly = getTotals(census)
         return Response(weekly)
 
-class PassengerCensusAnnualTrainsAvgViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
-    """
-    This viewset will provide a info about Annual System Wide Averages for the Max and WES Commuter Lines
-    """
-    serializer_class = PassengerCensusInfoSerializer
-
-    def list(self, request, *args, **kwargs):
-
-        census = PassengerCensus.objects.filter(route_number__in=[
-          "100",
-          "190",
-          "203",
-          "200",
-          "290"
-        ])
-        weekly = getAvgs(census)
-        return Response(weekly)
-
 class PassengerCensusAnnualStreetCarTotalViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
     """
     This viewset will provide a info about Annual System Wide Totals for the Portland Street Car
@@ -274,22 +243,6 @@ class PassengerCensusAnnualStreetCarTotalViewSet(viewsets.ViewSetMixin, generics
         weekly = getTotals(census)
         return Response(weekly)
 
-class PassengerCensusAnnualStreetCarAvgViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
-    """
-    This viewset will provide a info about Annual System Wide Averages for the Portland Street Car
-    """
-    serializer_class = PassengerCensusInfoSerializer
-
-    def list(self, request, *args, **kwargs):
-
-        census = PassengerCensus.objects.filter(route_number__in=[
-          "193",
-          "194",
-          "195"
-        ])
-        weekly = getAvgs(census)
-        return Response(weekly)
-
 class PassengerCensusAnnualTramTotalViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
     """
     This viewset will provide a info about Annual System Wide Totals for the Portland Aerial Tram
@@ -303,19 +256,6 @@ class PassengerCensusAnnualTramTotalViewSet(viewsets.ViewSetMixin, generics.List
         weekly = getTotals(census)
         return Response(weekly)
 
-class PassengerCensusAnnualTramAvgViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
-    """
-    This viewset will provide a info about Annual System Wide Averages for the Portland Aerial Tram
-    """
-    serializer_class = PassengerCensusInfoSerializer
-
-    def list(self, request, *args, **kwargs):
-        census = PassengerCensus.objects.filter(route_number__in=[
-          "208"
-        ])
-        weekly = getAvgs(census)
-        return Response(weekly)
-
 class PassengerCensusAnnualSystemTotalViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
     """
     This viewset will provide a info about Annual System Wide Totals.
@@ -325,17 +265,6 @@ class PassengerCensusAnnualSystemTotalViewSet(viewsets.ViewSetMixin, generics.Li
     def list(self, request, *args, **kwargs):
         census = PassengerCensus.objects.all()
         weekly = getTotals(census)
-        return Response(weekly)
-
-class PassengerCensusAnnualSystemAvgViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
-    """
-    This viewset will provide a info about Annual System Wide Averages.
-    """
-    serializer_class = PassengerCensusInfoSerializer
-
-    def list(self, request, *args, **kwargs):
-        census = PassengerCensus.objects.all()
-        weekly = getAvgs(census)
         return Response(weekly)
 
 class PassengerCensusDateFilter(DjangoFilterBackend):
@@ -366,38 +295,6 @@ class PassengerCensusDateFilter(DjangoFilterBackend):
         fields.append(route)
 
         return fields
-
-class PassengerCensusRoutesAnnualAvgViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
-    """
-    This viewset will provide a list of Passenger Census by Routes calculated for a total year.
-    """
-
-    # queryset = PassengerCensus.objects.all()
-    serializer_class = PassengerCensusAnnualSerializer
-    filter_backends = (PassengerCensusDateFilter,)
-    pagination_class = LargeResultsSetPagination
-
-    def list(self, request, *args, **kwargs):
-        if request.GET.get('route', ' ') != ' ':
-            this_route_number = request.GET.get('route', ' ')
-            try:
-                stops = PassengerCensus.objects.filter(route_number=this_route_number)
-                if stops.exists():
-                    if request.GET.get('year', ' ') != ' ':
-                        this_year = request.GET.get('year', ' ')
-                        try:
-                            stops = stops.filter(summary_begin_date__year=this_year)
-                        except ValueError:
-                            return Response('Search year must be four digit year', status=status.HTTP_400_BAD_REQUEST)
-                    if stops.exists():
-                        weekly = getAvgs(stops)
-                        return Response(weekly)
-                else:
-                    return Response('Route Number not found', status=status.HTTP_404_NOT_FOUND)
-            except ValueError:
-                return Response('Route Number must be integer', status=status.HTTP_400_BAD_REQUEST)
-        else:
-            return Response('Missing Route Number paramater', status=status.HTTP_400_BAD_REQUEST)
 
 class PassengerCensusRoutesAnnualTotalViewSet(viewsets.ViewSetMixin, generics.ListAPIView):
     """
