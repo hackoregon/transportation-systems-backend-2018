@@ -18,10 +18,16 @@ class BlockChangeSerializer(GeoFeatureModelSerializer):
     class Meta:
         model = models.BlockChange
         fields = '__all__'
-        geo_field = 'geom_polygon_4326'
+        geo_field = 'hull_4326'
 
 class RouteChangeSerializer(GeoFeatureModelSerializer):
     class Meta:
         model = models.RouteChange
         fields = '__all__'
         geo_field = 'geom_linestring'
+
+class SensorSerializer(GeoFeatureModelSerializer):
+    class Meta:
+        model = models.Sensor
+        fields = '__all__'
+        geo_field = 'geom_4326'
