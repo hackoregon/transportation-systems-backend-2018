@@ -43,7 +43,7 @@ blockchange = sandbox_view_factory(
   model_class=BlockChange,
   serializer_class=BlockChangeSerializer,
   multi_geom_class=MultiPolygon,
-  geom_field='geom_polygon_4326',
+  geom_field='hull_4326',
   attributes =block_change_meta['attributes'],
   dates=block_change_meta['dates'],
   )
