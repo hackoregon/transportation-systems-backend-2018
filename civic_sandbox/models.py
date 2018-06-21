@@ -28,12 +28,12 @@ class Crash(models.Model):
 class BlockChange(models.Model):
     census_block = models.CharField(max_length=50, primary_key=True)
     stops_pct_change = models.FloatField(max_length=50)
-    geom_polygon_4326 = models.GeometryField(null=True)
+    hull_4326 = models.PolygonField(null=True)
 
 
     class Meta:
         managed = False
-        db_table = 'census_block_change'
+        db_table = 'census_block_change_hull'
         in_db = 'passenger_census'
 
 class RouteChange(models.Model):
