@@ -6,55 +6,6 @@ from .routes import routes
 from .national import national
 from .service_availability import availability
 
-def getYearlyAvg(stops):
-        annuals = stops.values(year=ExtractYear("summary_begin_date")).annotate(
-            num_of_yearly_census=Count('summary_begin_date', distinct=True)).order_by("year")
-        weekly = stops.filter(service_key__icontains="W").values(year=ExtractYear("summary_begin_date")).annotate(
-            avg_weekday_sum_ons=(Sum('ons')*5*52/Count('summary_begin_date', distinct=True))/260,
-            avg_weekday_sum_offs=(Sum('offs')*5*52/Count('summary_begin_date', distinct=True))/260,
-            avg_weekday_stops=(Count('ons', distinct=True)*5*52/Count('summary_begin_date', distinct=True))/260
-            ).order_by("year")
-        saturday = stops.filter(service_key__icontains="S").values(year=ExtractYear("summary_begin_date")).annotate(
-            avg_saturday_sum_ons=(Sum('ons')*52/Count('summary_begin_date', distinct=True))/52,
-            avg_saturday_sum_offs=(Sum('offs')*52/Count('summary_begin_date', distinct=True))/52,
-            avg_saturday_stops=(Count('ons', distinct=True)*52/Count('summary_begin_date', distinct=True))/260
-            ).order_by("year")
-        sunday = stops.filter(service_key__icontains="U").values(year=ExtractYear("summary_begin_date")).annotate(
-            avg_sunday_sum_ons=(Sum('ons')*52/Count('summary_begin_date', distinct=True))/52,
-            avg_sunday_sum_offs=(Sum('offs')*52/Count('summary_begin_date', distinct=True))/52,
-            avg_sunday_stops=(Count('ons', distinct=True)*52/Count('summary_begin_date'))
-            ).order_by("year")
-        sorting_key = operator.itemgetter("year")
-        for i, j in zip(sorted(weekly, key=sorting_key), sorted(saturday, key=sorting_key)):i.update(j)
-        for i, j in zip(sorted(weekly, key=sorting_key), sorted(sunday, key=sorting_key)):i.update(j)
-        for i, j in zip(sorted(weekly, key=sorting_key), sorted(annuals, key=sorting_key)):i.update(j)
-        return weekly
-
-# def getYearlyTotal(stops):
-#         annuals = stops.values(year=ExtractYear("summary_begin_date")).annotate(
-#             num_of_yearly_census=Count('summary_begin_date', distinct=True)).order_by("year")
-#         weekly = stops.filter(service_key__icontains="W").values(year=ExtractYear("summary_begin_date")).annotate(
-#             weekday_sum_ons=(Sum('ons')*5*52/Count('summary_begin_date', distinct=True)),
-#             weekday_sum_offs=(Sum('offs')*5*52/Count('summary_begin_date', distinct=True)),
-#             weekday_total_stops=(Count('ons', distinct=True)*5*52/Count('summary_begin_date', distinct=True))
-#             ).order_by("year")
-#         saturday = stops.filter(service_key__icontains="S").values(year=ExtractYear("summary_begin_date")).annotate(
-#             saturday_sum_ons=(Sum('ons')*52/Count('summary_begin_date', distinct=True)),
-#             saturday_sum_offs=(Sum('offs')*52/Count('summary_begin_date', distinct=True)),
-#             saturday_total_stops=(Count('ons', distinct=True)*52/Count('summary_begin_date', distinct=True))
-#             ).order_by("year")
-#         sunday = stops.filter(service_key__icontains="U").values(year=ExtractYear("summary_begin_date")).annotate(
-#             sunday_sum_ons=(Sum('ons')*52/Count('summary_begin_date', distinct=True)),
-#             sunday_sum_offs=(Sum('offs')*52/Count('summary_begin_date', distinct=True)),
-#             sunday_total_stops=(Count('ons', distinct=True)*52/Count('summary_begin_date', distinct=True))
-#             ).order_by("year")
-#         sorting_key = operator.itemgetter("year")
-#         for i, j in zip(sorted(weekly, key=sorting_key), sorted(saturday, key=sorting_key)):i.update(j)
-#         for i, j in zip(sorted(weekly, key=sorting_key), sorted(sunday, key=sorting_key)):i.update(j)
-#         for i, j in zip(sorted(weekly, key=sorting_key), sorted(annuals, key=sorting_key)):i.update(j)
-#         return weekly
-
-
 def getYearlyTotal(stops):
         annuals = stops.values(year=ExtractYear("summary_begin_date")).annotate(
             num_of_yearly_census=Count('summary_begin_date', distinct=True)).order_by("year")
@@ -78,26 +29,6 @@ def getYearlyTotal(stops):
         for i, j in zip(sorted(weekly, key=sorting_key), sorted(sunday, key=sorting_key)):i.update(j)
         for i, j in zip(sorted(weekly, key=sorting_key), sorted(annuals, key=sorting_key)):i.update(j)
         return weekly
-
-def getAvgs(stops):
-    weekly = getYearlyAvg(stops)
-    for week in weekly:
-        week["sunday_census"] = True
-        week["saturday_census"] = True
-        if  "avg_saturday_sum_ons" not in week:
-            week["avg_saturday_sum_ons"] = 0
-            week["avg_saturday_sum_offs"]  = 0
-            week["avg_saturday_stops"] = 0
-            week["saturday_census"] = False
-        if "avg_sunday_sum_ons" not in week:
-            week["avg_sunday_sum_ons"] = 0
-            week["avg_sunday_sum_offs"]  = 0
-            week["avg_sunday_stops"] = 0
-            week["sunday_census"] = False
-        week["avg_weekly_sum_ons"] = week["avg_weekday_sum_ons"] + week["avg_saturday_sum_ons"] + week["avg_sunday_sum_ons"]
-        week["avg_weekly_sum_offs"] = week["avg_weekday_sum_offs"] + week["avg_saturday_sum_offs"] + week["avg_sunday_sum_offs"]
-        week["avg_weekly_total_stops"] = week["avg_weekday_stops"] + week["avg_saturday_stops"] + week["avg_sunday_stops"]
-    return weekly
 
 def getTotals(stops):
     weekly = getYearlyTotal(stops)
