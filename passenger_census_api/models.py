@@ -32,6 +32,19 @@ class AnnualRouteRidership(models.Model):
         db_table = 'annual_route_ridership'
         in_db = 'passenger_census'
 
+class AnnualRouteDifferencesForScatter(models.Model):
+    route_id = models.TextField(blank=True, null=True)
+    year = models.IntegerField(blank=True, null=True)
+    trip_count = models.IntegerField(blank=True, null=True)
+    frequency_change = models.FloatField(blank=True, null=True)
+    ons = models.IntegerField(blank=True, null=True)
+    ridership_change = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'annual_route_differences_for_scatter'
+        in_db = 'passenger_census'
+
 
 class CensusBlockChange(models.Model):
     census_block = models.CharField(primary_key=True, max_length=255)
@@ -49,9 +62,8 @@ class CensusBlockChange(models.Model):
         in_db = 'passenger_census'
 
 class RouteChange(models.Model):
-    route_id = models.TextField()
-    direction_id = models.IntegerField()
-    shape_id = models.TextField(primary_key=True)
+    route_id = models.TextField(primary_key=True)
+    shape_id = models.TextField(blank=True, null=True)
     y2009_trip_count = models.IntegerField(blank=True, null=True)
     y2017_trip_count = models.IntegerField(blank=True, null=True)
     geom_linestring = models.LineStringField(blank=True, null=True)
@@ -60,7 +72,6 @@ class RouteChange(models.Model):
     class Meta:
         managed = False
         db_table = 'route_change'
-        unique_together = (('route_id', 'direction_id', 'shape_id'),)
         in_db = 'passenger_census'
 
 

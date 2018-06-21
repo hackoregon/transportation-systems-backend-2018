@@ -4,7 +4,7 @@ from rest_framework_gis import serializers
 
 from rest_framework.serializers import CharField, IntegerField, BooleanField
 
-from passenger_census_api.models import PassengerCensus, AnnualRouteRidership, OrCensusBlockPolygons, WaCensusBlockPolygons, AnnualCensusBlockRidership, CensusBlockChange, RouteChange
+from passenger_census_api.models import PassengerCensus, AnnualRouteRidership, OrCensusBlockPolygons, WaCensusBlockPolygons, AnnualCensusBlockRidership, CensusBlockChange, RouteChange, AnnualRouteDifferencesForScatter
 
 class AnnualCensusBlockRidershipSerializer(serializers.GeoFeatureModelSerializer):
     class Meta:
@@ -12,6 +12,10 @@ class AnnualCensusBlockRidershipSerializer(serializers.GeoFeatureModelSerializer
         fields = '__all__'
         geo_field = 'geom_polygon_4326'
 
+class AnnualRouteDifferencesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AnnualRouteDifferencesForScatter
+        fields = '__all__'
 
 class AnnualRouteRidershipSerializer(serializers.ModelSerializer):
     class Meta:
