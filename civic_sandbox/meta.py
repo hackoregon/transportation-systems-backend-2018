@@ -45,6 +45,11 @@ block_change_meta = {
     'primary': {
       'field': 'pct_change',
       'name': 'Ridership Change from 2009 to 2017',
+      'visualization': {
+        'type': 'Text',
+        'comparison_value': None,
+        'comparison_name': None,
+      },
     },
     'secondary': {
       'field': None,
