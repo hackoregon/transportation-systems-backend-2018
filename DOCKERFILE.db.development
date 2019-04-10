@@ -7,7 +7,6 @@ RUN apt-get update \
     postgis \
     postgresql-9.6-postgis-2.4 \
     postgresql-9.6-postgis-2.4-scripts \
-    postgresql-9.6-postgis-scripts \
     postgresql-9.6-pgrouting \
   && apt-get clean
 
