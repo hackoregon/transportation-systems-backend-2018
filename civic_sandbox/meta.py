@@ -23,8 +23,8 @@ safety_hotline_meta = {
 crash_meta = {
   'attributes': {
     'primary': {
-      'field': None,
-      'name': None,
+      'field': 'crash_dt',
+      'name': 'Crash Date',
     },
     'secondary': {
       'field': None,
