@@ -68,7 +68,7 @@ block_change_meta = {
 route_change_meta = {
   'attributes': {
     'primary': {
-      'field': 'stops_pct_change',
+      'field': 'pct_change',
       'name': 'Ridership Change from 2009 to 2017',
     },
     'secondary': {
