@@ -43,7 +43,7 @@ crash_meta = {
 block_change_meta = {
   'attributes': {
     'primary': {
-      'field': 'pct_change',
+      'field': 'stops_pct_change',
       'name': 'Ridership Change from 2009 to 2017',
       'visualization': {
         'type': 'Text',
